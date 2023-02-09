@@ -1,0 +1,26 @@
+<div class="cards-container">
+    <mat-card class="domain-card" *ngFor="let domain of domainList$ | async">
+        <mat-card-header>
+            <mat-card-title>{{domain.title}}</mat-card-title>
+            <mat-card-subtitle>ID: {{domain.id}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <br>
+            <p>{{domain.summary}}</p>
+            <mat-divider></mat-divider>
+            <mat-chip-set *ngIf="domain.tags.length">
+                <mat-chip *ngFor="let tag of domain.tags">{{tag}}</mat-chip>
+            </mat-chip-set>
+            <ng-container *ngIf="domain.additionals.length">
+                <br>
+                <ng-container *ngFor="let additional of domain.additionals">
+                    <h5>{{additional.title}}</h5>
+                    <p>{{additional.content}}</p>
+                </ng-container>
+            </ng-container>
+        </mat-card-content>
+        <mat-card-actions class="card-actions">
+            <button mat-button>Go to domain!</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

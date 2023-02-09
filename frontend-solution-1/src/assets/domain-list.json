@@ -1,0 +1,25 @@
+[
+    {
+        "id": "1",
+        "title": "CRUD domain",
+        "summary": "This domain is about a common set of API's that solve a typical set of CRUD operations over the sakila db.",
+        "tags": [
+            "CRUD", "Sakila", "MySQL", "OpenAPI / Swagger"
+        ],
+        "additionals": [
+            { 
+                "title": "Database solution",
+                "content": "Standalone MySQL db running in docker"
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "title": "Auth domain",
+        "summary": "This domain is about a typical authentication & authorization scheme ...",
+        "tags": [
+            "Auth", "JWT"
+        ],
+        "additionals": []
+    }
+]

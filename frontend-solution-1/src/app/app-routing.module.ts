@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { 
-    path: 'configuration', 
-    loadChildren: () => import('./configuration/configuration.module').then(m => m.ConfigurationModule) 
-  }
+  { path: '', redirectTo: 'domain-select', pathMatch: 'full' },
+  { path: 'domain-select', loadChildren: () => import('./domain-select/domain-select.module').then(m => m.DomainSelectModule) }
 ];
 
 @NgModule({
