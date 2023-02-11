@@ -1,5 +1,7 @@
-## Build the image 
-docker build -t mysqlsakilaimg1 .
+## Docker commands
 
-## Run the image
-docker run -d -p 3306:3306 --name mysqlsakilacntr1 mysqlsakilaimg1
+### Build the image 
+`docker build -t mysql-sakila-img .`
+
+### Run the image
+`docker run -d -p 3306:3306 --name mysql-sakila mysql-sakila-img`
