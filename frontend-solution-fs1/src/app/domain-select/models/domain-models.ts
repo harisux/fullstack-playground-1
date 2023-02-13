@@ -1,5 +1,5 @@
 export interface Domain {
-    id: number;
+    id: string;
     title: string;
     summary: string;
     tags: string[];

@@ -1,20 +1,24 @@
 [
     {
-        "id": "1",
+        "id": "pd1",
         "title": "CRUD domain",
         "summary": "This domain is about a common set of API's that solve a typical set of CRUD operations over the sakila db.",
         "tags": [
-            "CRUD", "Sakila", "MySQL", "OpenAPI / Swagger"
+            "CRUD", "Sakila", "MySQL", "Docker", "OpenAPI"
         ],
         "additionals": [
             { 
                 "title": "Database solution",
                 "content": "Standalone MySQL db running in docker"
+            },
+            { 
+                "title": "API solution",
+                "content": "A common OpenAPI yaml specification + generator for java"
             }
         ]
     },
     {
-        "id": "2",
+        "id": "pd2",
         "title": "Auth domain",
         "summary": "This domain is about a typical authentication & authorization scheme ...",
         "tags": [
