@@ -9,7 +9,8 @@ paths:
     get:
       summary: Gets a list of all films
       tags: 
-        - Films
+        - films
+      operationId: getFilmList
       responses:
         '200':
           description: OK
@@ -26,7 +27,8 @@ paths:
     post:
       summary: Creates a new film
       tags: 
-        - Films
+        - films
+      operationId: createFilm
       requestBody:
         content:
           application/json:
@@ -49,6 +51,7 @@ paths:
       summary: Updates an existing film
       tags: 
         - Films
+      operationId: updateFilm
       requestBody:
         content:
           application/json:
@@ -73,11 +76,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /film/{id}:
+  /films/{id}:
     get:
       summary: Gets a film by id
       tags:
-        - Films
+        - films
+      operationId: getFilm
       parameters:
         - name: id
           in: path
@@ -108,7 +112,8 @@ paths:
     delete:
       summary: Deletes a film by id
       tags:
-        - Films
+        - films
+      operationId: deleteFilm
       parameters:
         - name: id
           in: path
