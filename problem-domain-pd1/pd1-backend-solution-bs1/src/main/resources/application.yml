@@ -20,3 +20,8 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
     preferIpAddress: true
+    metadata-map:
+      problem-domain-id: pd1
+      summary: Solution based on Spring framework and the Java programming language. Imperative approach with WebMvc + Data JPA. 
+      tags: Java, Spring, WebMvc, Data JPA
+      details-list: "Language: Java | Framework: Spring | Approach: Imperative Web Mvc | Key libraries: Eureka client, Spring Web, Data JPA | Build: Maven, OpenAPI generator plugin" 
