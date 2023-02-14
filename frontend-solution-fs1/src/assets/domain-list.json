@@ -13,7 +13,7 @@
             },
             { 
                 "title": "API solution",
-                "content": "A common OpenAPI yaml specification + generator for java"
+                "content": "A common OpenAPI yaml specification + generator for Java"
             }
         ]
     },
