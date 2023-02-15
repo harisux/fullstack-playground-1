@@ -18,18 +18,19 @@ export class BackendDiscoveryService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private getBackendOptions(domainId: string): Observable<BackendOption[]> {
+  getBackendOptions(domainId: string): Observable<BackendOption[]> {
     return this.httpClient.get<Application>(this.discoveryUrl).pipe(
       map(app => this.mapApplicationToBackendOptions(app))
     );
   }
 
-  mapApplicationToBackendOptions(application: Application): BackendOption[] {
+  private mapApplicationToBackendOptions(application: Application): BackendOption[] {
     let backendOptions: BackendOption[] = [];
     application.instance.forEach(inst => {
       let backendOpt: BackendOption = {
         baseUrl: inst.homePageUrl,
         id: inst.app,
+        title: inst.metadata.title,
         problemDomainId: inst.metadata.problemDomainId,
         summary: inst.metadata.summary,
         tags: this.assembleTags(inst.metadata.tags),
@@ -39,7 +40,7 @@ export class BackendDiscoveryService {
     return backendOptions;
   }
 
-  assembleTags(tagsStr: string): string[] {
+  private assembleTags(tagsStr: string): string[] {
     let tags: string[] = [];
     tagsStr.split(this.TAGS_SEPARATOR).forEach(t => tags.push(t.trim()));
     return tags;

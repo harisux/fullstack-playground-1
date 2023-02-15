@@ -1,1 +1,30 @@
-<p>backend-select works!</p>
+
+<div class="cards-container">
+    <h2>Lets choose a backend solution for domain: {{selectedDomain?.id}}!</h2>
+    <mat-card class="option-card" *ngFor="let opt of backendOptions$ | async">
+        <mat-card-header>
+            <mat-card-title>{{opt.title}}</mat-card-title>
+            <mat-card-subtitle>ID: {{opt.id}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <br>
+            <p>{{opt.summary}}</p>
+            <mat-divider></mat-divider>
+            <mat-chip-set *ngIf="opt.tags.length">
+                <mat-chip *ngFor="let tag of opt.tags">{{tag}}</mat-chip>
+            </mat-chip-set>
+            <ng-container *ngIf="opt.details.length">
+                <br>
+                <ng-container *ngFor="let detail of opt.details">
+                    <h5>{{detail.title}}:</h5>
+                    <mat-list *ngIf="detail.values.length">
+                        <mat-list-item *ngFor="let value of detail.values">+ {{value}}</mat-list-item>
+                    </mat-list>
+                </ng-container>
+            </ng-container>
+        </mat-card-content>
+        <mat-card-actions class="card-actions">
+            <button mat-button>Go to solution!</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

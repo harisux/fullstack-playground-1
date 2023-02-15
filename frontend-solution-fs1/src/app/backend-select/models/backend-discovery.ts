@@ -20,6 +20,7 @@ export interface Instance {
 
 export interface Metadata {
     problemDomainId: string;
+    title: string;
     summary: string;
     tags: string;
     detailsList: string;

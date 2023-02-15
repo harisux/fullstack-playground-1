@@ -1,4 +1,6 @@
+
 <div class="cards-container">
+    <h2>Lets choose a problem domain!</h2>
     <mat-card class="domain-card" *ngFor="let domain of domainList$ | async">
         <mat-card-header>
             <mat-card-title>{{domain.title}}</mat-card-title>
@@ -14,7 +16,7 @@
             <ng-container *ngIf="domain.additionals.length">
                 <br>
                 <ng-container *ngFor="let additional of domain.additionals">
-                    <h5>{{additional.title}}</h5>
+                    <h5>*{{additional.title}}:</h5>
                     <p>{{additional.content}}</p>
                 </ng-container>
             </ng-container>
