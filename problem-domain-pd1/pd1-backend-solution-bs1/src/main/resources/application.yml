@@ -10,7 +10,7 @@ spring:
     show-sql: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sakila?useSSL=false
+    url: jdbc:mysql://localhost:3306/sakila
     username: sakilauser1
     password: sakilauser1
 
@@ -21,7 +21,7 @@ eureka:
   instance:
     preferIpAddress: true
     metadata-map:
-      problem-domain-id: pd1
+      problemDomainId: pd1
       summary: Solution based on Spring framework and the Java programming language. Imperative approach with WebMvc + Data JPA. 
       tags: Java, Spring, WebMvc, Data JPA
-      details-list: "Language: Java | Framework: Spring | Approach: Imperative Web Mvc | Key libraries: Eureka client, Spring Web, Data JPA | Build: Maven, OpenAPI generator plugin" 
+      detailsList: "Language: Java | Framework: Spring | Approach: Imperative Web Mvc | Key libraries: Eureka client, Spring Web, Data JPA | Build: Maven, OpenAPI generator plugin" 
