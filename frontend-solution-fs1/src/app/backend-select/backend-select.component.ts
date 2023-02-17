@@ -7,15 +7,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, switchMap, tap } from 'rxjs';
 import { BackendOption } from './models/backend-option';
 import { Domain } from '../domain-select/models/domain-models';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-backend-select',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     MatCardModule,
     MatButtonModule,
     MatDividerModule,
@@ -24,19 +27,23 @@ import { Domain } from '../domain-select/models/domain-models';
   ],
   providers: [ BackendDiscoveryService ],
   templateUrl: './backend-select.component.html',
-  styleUrls: ['./backend-select.component.scss']
+  styleUrls: ['./backend-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BackendSelectComponent implements OnInit {
-
-  selectedDomain: Domain | undefined;
+  selectedDomainId$: Observable<string | null> | undefined;
   backendOptions$: Observable<BackendOption[]> | undefined;
         
-  constructor(private backendDiscovery: BackendDiscoveryService) {}
+  constructor(private backendDiscovery: BackendDiscoveryService, 
+              private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.selectedDomain = {} as Domain;
-    this.backendOptions$ = this.backendDiscovery.getBackendOptions(this.selectedDomain.id).pipe(
-      tap(b => console.log(b))
+    this.selectedDomainId$ = this.route.paramMap.pipe(map(params => params.get('id')));
+    this.backendOptions$ = this.selectedDomainId$.pipe(
+      switchMap(id => {
+        return this.backendDiscovery.getBackendOptions(id ? id : '');
+      })
+      ,tap(b => console.log(b))      
     );
   }
 

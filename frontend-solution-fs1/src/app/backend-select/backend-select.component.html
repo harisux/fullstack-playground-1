@@ -1,6 +1,6 @@
 
 <div class="cards-container">
-    <h2>Lets choose a backend solution for domain: {{selectedDomain?.id}}!</h2>
+    <h2>Lets choose a backend solution for domain: {{selectedDomainId$ | async}}!</h2>
     <mat-card class="option-card" *ngFor="let opt of backendOptions$ | async">
         <mat-card-header>
             <mat-card-title>{{opt.title}}</mat-card-title>
@@ -16,13 +16,15 @@
             <ng-container *ngIf="opt.details.length">
                 <br>
                 <ng-container *ngFor="let detail of opt.details">
-                    <h5>{{detail.title}}:</h5>
+                    <span matListItemTitle>{{detail.title}}:</span>
                     <mat-list *ngIf="detail.values.length">
-                        <mat-list-item *ngFor="let value of detail.values">+ {{value}}</mat-list-item>
+                        <mat-list-item matListItemLine *ngFor="let value of detail.values">
+                           + {{value}}
+                        </mat-list-item>
                     </mat-list>
                 </ng-container>
             </ng-container>
-        </mat-card-content>
+        </mat-card-content> 
         <mat-card-actions class="card-actions">
             <button mat-button>Go to solution!</button>
         </mat-card-actions>

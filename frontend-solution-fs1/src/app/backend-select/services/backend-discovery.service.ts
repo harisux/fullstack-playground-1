@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Application } from '../models/backend-discovery';
+import { Application, BackendDiscovery } from '../models/backend-discovery';
 import { BackendOption, Detail } from '../models/backend-option';
 
 @Injectable({
@@ -19,14 +19,14 @@ export class BackendDiscoveryService {
   constructor(private httpClient: HttpClient) { }
 
   getBackendOptions(domainId: string): Observable<BackendOption[]> {
-    return this.httpClient.get<Application>(this.discoveryUrl).pipe(
+    return this.httpClient.get<BackendDiscovery>(this.discoveryUrl).pipe(
       map(app => this.mapApplicationToBackendOptions(app))
     );
   }
 
-  private mapApplicationToBackendOptions(application: Application): BackendOption[] {
+  private mapApplicationToBackendOptions(discoveryResp: BackendDiscovery): BackendOption[] {
     let backendOptions: BackendOption[] = [];
-    application.instance.forEach(inst => {
+    discoveryResp.applications.application[0].instance.forEach(inst => {
       let backendOpt: BackendOption = {
         baseUrl: inst.homePageUrl,
         id: inst.app,
@@ -35,7 +35,8 @@ export class BackendDiscoveryService {
         summary: inst.metadata.summary,
         tags: this.assembleTags(inst.metadata.tags),
         details: this.assembleDetails(inst.metadata.detailsList)
-      }
+      };
+      backendOptions.push(backendOpt);
     });
     return backendOptions;
   }
