@@ -15,19 +15,21 @@ public class FilmsServiceImpl implements FilmsService {
 
     @Override
     public Film createFilm(Film film) {
-        return filmRepository.save(film);
+        return null;
+        // return filmRepository.save(film);
     }
 
     @Override
     public FilmList getFilmList() {
         FilmList filmList = new FilmList();
-        filmList.setData(filmRepository.findAll());
+        //filmList.setData(filmRepository.findAll());
         return filmList;
     }
 
     @Override
     public Film updateFilm(Film film) {
-        return filmRepository.save(film);
+        return null;
+        // return filmRepository.save(film);
     }
 
     @Override
@@ -43,11 +45,12 @@ public class FilmsServiceImpl implements FilmsService {
 
     @Override
     public Film getFilm(Integer id) {
-        return filmRepository.findById(id)
+        return null;
+        /*return filmRepository.findById(id)
             .orElseThrow(() -> {
                 String message = String.format("Film with id=%d not found!", id); 
                 return new FilmNotFoundException(message);
-            });
+            });*/
     }
     
 }

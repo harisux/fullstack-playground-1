@@ -1,7 +1,7 @@
 package org.harisux.fullstackplay.pd1backendsolutionbs1.persistence.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -19,7 +19,7 @@ import lombok.Data;
 @Entity
 @Table(name = "film")
 @Data
-public class Film {
+public class FilmDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,6 +63,6 @@ public class Film {
     Set<String> specialFeatures;
 
     @Column(name = "last_update")
-    Date lastUpdate;
+    OffsetDateTime lastUpdate;
 
 }
