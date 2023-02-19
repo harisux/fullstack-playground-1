@@ -1,9 +1,13 @@
 package org.harisux.fullstackplay.pd1backendsolutionbs1.persistence.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,7 +33,7 @@ public class Film {
     String description;
 
     @Column(name = "release_year")
-    Integer releaseYear;
+    java.sql.Date releaseYear;
 
     @ManyToOne()
     @JoinColumn(name = "language_id")
@@ -43,19 +47,20 @@ public class Film {
     Integer rentalDuration;
 
     @Column(name = "rental_rate")
-    Double rentalRate;
+    BigDecimal rentalRate;
 
     @Column(name = "length")
     Integer length;
 
     @Column(name = "replacement_cost")
-    Double replacementCost;
+    BigDecimal replacementCost;
 
-    @Column(name = "rating")
-    String rating;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "ENUM('G', 'PG', 'PG-13', 'R', 'NC-17')")
+    Rating rating;
 
-    @Column(name = "special_features")
-    String specialFeatures;
+    @Column(name = "special_features", columnDefinition = "set")
+    Set<String> specialFeatures;
 
     @Column(name = "last_update")
     Date lastUpdate;

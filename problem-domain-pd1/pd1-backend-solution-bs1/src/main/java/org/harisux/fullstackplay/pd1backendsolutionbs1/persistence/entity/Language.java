@@ -20,7 +20,7 @@ public class Language {
     @Column(name = "language_id")
     Integer languageId;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "char")
     String name;
 
     @Column(name = "last_update")
