@@ -40,7 +40,7 @@ public class FilmsApiImpl implements FilmsApi {
 
     @Override
     public ResponseEntity<Film> getFilm(Integer id) {
-        return null;
+        return ResponseEntity.ok(filmsService.getFilm(id));
     }
     
 }

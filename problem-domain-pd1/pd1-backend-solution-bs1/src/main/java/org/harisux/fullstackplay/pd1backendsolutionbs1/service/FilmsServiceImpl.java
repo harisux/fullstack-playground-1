@@ -60,12 +60,12 @@ public class FilmsServiceImpl implements FilmsService {
     @Override
     @Transactional
     public Film getFilm(Integer id) {
-        return null;
-        /*return filmsRepository.findById(id)
+        FilmDto dbFilm = filmsRepository.findById(id)
             .orElseThrow(() -> {
                 String message = String.format("Film with id=%d not found!", id); 
                 return new FilmNotFoundException(message);
-            });*/
+        });
+        return filmsMapper.filmDtoToFilm(dbFilm);
     }
     
 }
