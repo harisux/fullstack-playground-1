@@ -34,11 +34,11 @@ public class FilmDto {
 
     @ManyToOne()
     @JoinColumn(name = "language_id")
-    Language language;
+    LanguageDto language;
 
     @ManyToOne()
     @JoinColumn(name = "original_language_id")
-    Language originalLanguage;
+    LanguageDto originalLanguage;
 
     @Column(name = "rental_duration")
     Integer rentalDuration;
@@ -52,12 +52,11 @@ public class FilmDto {
     @Column(name = "replacement_cost")
     BigDecimal replacementCost;
 
-    //@Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('G', 'PG', 'PG-13', 'R', 'NC-17')")
-    String rating; //Rating
+    String rating;
 
     @Column(name = "special_features", columnDefinition = "set")
-    String specialFeatures; //Set<String>
+    String specialFeatures;
 
     @Column(name = "last_update")
     OffsetDateTime lastUpdate;

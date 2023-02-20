@@ -1,6 +1,6 @@
 package org.harisux.fullstackplay.pd1backendsolutionbs1.persistence.entity;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import lombok.Data;
 @Entity
 @Table(name = "language")
 @Data
-public class Language {
+public class LanguageDto {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,6 @@ public class Language {
     String name;
 
     @Column(name = "last_update")
-    Date lastUpdate;
+    OffsetDateTime lastUpdate;
 
 }
