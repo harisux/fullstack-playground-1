@@ -25,8 +25,9 @@ public class FilmsServiceImpl implements FilmsService {
     @Override
     @Transactional
     public Film createFilm(Film film) {
-        return null;
-        // return filmsRepository.save(film);
+        FilmDto filmDto = filmsMapper.filmToFilmDto(film);
+        FilmDto savedFilmDto = filmsRepository.save(filmDto);
+        return filmsMapper.filmDtoToFilm(savedFilmDto);
     }
 
     @Override
@@ -41,8 +42,9 @@ public class FilmsServiceImpl implements FilmsService {
     @Override
     @Transactional
     public Film updateFilm(Film film) {
-        return null;
-        // return filmsRepository.save(film);
+        FilmDto filmDto = filmsMapper.filmToFilmDto(film);
+        FilmDto savedFilmDto = filmsRepository.save(filmDto);
+        return filmsMapper.filmDtoToFilm(savedFilmDto);
     }
 
     @Override

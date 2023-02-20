@@ -2,6 +2,8 @@ package org.harisux.fullstackplay.pd1backendsolutionbs1.persistence.entity;
 
 import java.time.OffsetDateTime;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ public class LanguageDto {
     @Column(name = "name", columnDefinition = "char")
     String name;
 
+    @UpdateTimestamp
     @Column(name = "last_update")
     OffsetDateTime lastUpdate;
 

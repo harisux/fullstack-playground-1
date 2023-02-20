@@ -3,6 +3,8 @@ package org.harisux.fullstackplay.pd1backendsolutionbs1.persistence.entity;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,8 +31,8 @@ public class FilmDto {
     @Column(name = "description")
     String description;
 
-    @Column(name = "release_year")
-    java.sql.Date releaseYear;
+    @Column(name = "release_year", columnDefinition = "year")
+    Integer releaseYear;
 
     @ManyToOne()
     @JoinColumn(name = "language_id")
@@ -58,6 +60,7 @@ public class FilmDto {
     @Column(name = "special_features", columnDefinition = "set")
     String specialFeatures;
 
+    @UpdateTimestamp
     @Column(name = "last_update")
     OffsetDateTime lastUpdate;
 

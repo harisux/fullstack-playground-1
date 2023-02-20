@@ -7,6 +7,7 @@ import org.harisux.fullstackplay.openapi.model.Film;
 import org.harisux.fullstackplay.openapi.model.FilmList;
 import org.harisux.fullstackplay.pd1backendsolutionbs1.service.FilmsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class FilmsApiImpl implements FilmsApi {
 
     @Override
     public ResponseEntity<Film> createFilm(@Valid Film film) {
-        return null;
+        return ResponseEntity.ok(filmsService.createFilm(film));
     }
 
     @Override
@@ -30,12 +31,13 @@ public class FilmsApiImpl implements FilmsApi {
 
     @Override
     public ResponseEntity<Film> updateFilm(@Valid Film film) {
-        return null;
+        return ResponseEntity.ok(filmsService.updateFilm(film));
     }
 
     @Override
     public ResponseEntity<Void> deleteFilm(Integer id) {
-        return null;
+        filmsService.deleteFilm(id);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
     @Override

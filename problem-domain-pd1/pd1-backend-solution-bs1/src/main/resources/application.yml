@@ -4,8 +4,8 @@ server:
 spring:
   application:
     name: pd1-backend-solution-bs1
-  #profiles:
-    #active: debug
+  profiles:
+    active: debug
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
