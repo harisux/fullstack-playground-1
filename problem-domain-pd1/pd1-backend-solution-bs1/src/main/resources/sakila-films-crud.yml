@@ -3,7 +3,7 @@ info:
   title: Sakila Films CRUD API
   version: '1.0'
 servers:
-  - url: /v1
+  - url: /api/v1
 paths:
   /films:
     get:

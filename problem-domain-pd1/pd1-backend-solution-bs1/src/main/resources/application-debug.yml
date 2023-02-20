@@ -1,0 +1,15 @@
+
+logging:
+  level:
+    root: DEBUG
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+              
+eureka:
+  client:
+    enabled: false

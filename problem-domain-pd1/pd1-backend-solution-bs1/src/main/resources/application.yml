@@ -4,7 +4,10 @@ server:
 spring:
   application:
     name: pd1-backend-solution-bs1
+  #profiles:
+    #active: debug
   jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: validate
     show-sql: true

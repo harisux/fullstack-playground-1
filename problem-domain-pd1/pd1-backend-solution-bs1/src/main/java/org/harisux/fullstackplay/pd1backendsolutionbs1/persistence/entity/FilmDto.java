@@ -2,12 +2,9 @@ package org.harisux.fullstackplay.pd1backendsolutionbs1.persistence.entity;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -55,12 +52,12 @@ public class FilmDto {
     @Column(name = "replacement_cost")
     BigDecimal replacementCost;
 
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('G', 'PG', 'PG-13', 'R', 'NC-17')")
-    Rating rating;
+    String rating; //Rating
 
     @Column(name = "special_features", columnDefinition = "set")
-    Set<String> specialFeatures;
+    String specialFeatures; //Set<String>
 
     @Column(name = "last_update")
     OffsetDateTime lastUpdate;
