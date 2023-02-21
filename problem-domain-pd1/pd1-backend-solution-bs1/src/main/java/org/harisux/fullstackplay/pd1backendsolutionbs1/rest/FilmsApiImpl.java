@@ -1,6 +1,9 @@
 package org.harisux.fullstackplay.pd1backendsolutionbs1.rest;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.harisux.fullstackplay.openapi.api.FilmsApi;
 import org.harisux.fullstackplay.openapi.model.Film;
@@ -25,8 +28,9 @@ public class FilmsApiImpl implements FilmsApi {
     }
 
     @Override
-    public ResponseEntity<FilmList> getFilmList() {
-        return ResponseEntity.ok(filmsService.getFilmList());
+    public ResponseEntity<FilmList> getFilmList(@NotNull @Min(1) @Max(100) @Valid Integer limit,
+            @Min(0) @Valid Integer offset, @Valid String sortBy, @Valid String order) {
+        return ResponseEntity.ok(filmsService.getFilmList(limit, offset, sortBy, order));
     }
 
     @Override
@@ -44,5 +48,5 @@ public class FilmsApiImpl implements FilmsApi {
     public ResponseEntity<Film> getFilm(Integer id) {
         return ResponseEntity.ok(filmsService.getFilm(id));
     }
-    
+
 }

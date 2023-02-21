@@ -11,6 +11,46 @@ paths:
       tags: 
         - films
       operationId: getFilmList
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+          description: number of films to skip before collecting
+        - in: query
+          name: limit
+          required: true
+          schema: 
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+          description: number of films to limit
+        - in: query
+          name: sort_by
+          schema: 
+            type: string
+            enum:
+              - film_id
+              - title
+              - release_year
+              - rental_rate
+              - length
+              - rating
+            default: film_id
+          description: field to sort list of films
+        - in: query
+          name: order
+          schema: 
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+          description: ascending or descending order
       responses:
         '200':
           description: OK

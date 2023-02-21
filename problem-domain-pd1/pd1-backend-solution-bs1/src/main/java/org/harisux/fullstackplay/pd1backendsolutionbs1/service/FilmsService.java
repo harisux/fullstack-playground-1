@@ -7,7 +7,8 @@ public interface FilmsService {
     
     public Film createFilm(Film film);
     
-    public FilmList getFilmList();
+    public FilmList getFilmList(
+        Integer limit, Integer offset, String sortBy, String order);
 
     public Film updateFilm(Film film);
 
