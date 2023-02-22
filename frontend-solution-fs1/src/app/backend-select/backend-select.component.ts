@@ -7,9 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { map, Observable, switchMap, tap } from 'rxjs';
 import { BackendOption } from './models/backend-option';
-import { Domain } from '../domain-select/models/domain-models';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
 
@@ -23,7 +23,8 @@ import { ChangeDetectionStrategy } from '@angular/core';
     MatButtonModule,
     MatDividerModule,
     MatChipsModule,
-    MatListModule
+    MatListModule,
+    MatExpansionModule
   ],
   providers: [ BackendDiscoveryService ],
   templateUrl: './backend-select.component.html',
