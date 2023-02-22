@@ -29,7 +29,9 @@
             </mat-expansion-panel>
         </mat-card-content> 
         <mat-card-actions class="card-actions">
-            <button mat-button>Go to solution!</button>
+            <button mat-button routerLink="{{'/domain/' + (selectedDomainId$ | async) + '/show'}}">
+                Go to solution!
+            </button>
         </mat-card-actions>
     </mat-card>
 </div>
