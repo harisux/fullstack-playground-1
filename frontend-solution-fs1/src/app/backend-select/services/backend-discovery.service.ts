@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { pipe, map, Observable, Subject } from 'rxjs';
 import { Application, BackendDiscovery } from '../models/backend-discovery';
 import { BackendOption, Detail } from '../models/backend-option';
 
@@ -9,16 +9,18 @@ import { BackendOption, Detail } from '../models/backend-option';
 })
 export class BackendDiscoveryService {
 
-  discoveryUrl: string = "http://localhost:8761/eureka/v2/apps";
+  private discoveryUrl: string = "http://localhost:8761/eureka/v2/apps";
+  private selectedBackend$: Subject<BackendOption> = new Subject();
   
   readonly TAGS_SEPARATOR = ','; 
   readonly DETAILS_SEPARATOR = '|';
   readonly DETAILS_KEY_VALUE_SEPARATOR = ':';
   readonly DETAILS_VALUE_LIST_SEPARATOR = ',';
 
-  constructor(private httpClient: HttpClient) { }
+  //Services
+  private httpClient = inject(HttpClient);
 
-  getBackendOptions(domainId: string): Observable<BackendOption[]> {
+  public getBackendOptions(domainId: string): Observable<BackendOption[]> {
     return this.httpClient.get<BackendDiscovery>(this.discoveryUrl).pipe(
       map(app => this.mapApplicationToBackendOptions(app))
     );
@@ -47,7 +49,7 @@ export class BackendDiscoveryService {
     return tags;
   }
 
-  assembleDetails(detailList: string): Detail[] {
+  private assembleDetails(detailList: string): Detail[] {
     let details: Detail[] = [];
     detailList.split(this.DETAILS_SEPARATOR).forEach(d => {
       let dKey = d.split(this.DETAILS_KEY_VALUE_SEPARATOR)[0];
@@ -57,6 +59,16 @@ export class BackendDiscoveryService {
       details.push({ title: dKey, values: values });
     });
     return details;
+  }
+
+  public selectBackend(backendOpt: BackendOption): void {
+    this.selectedBackend$.next(backendOpt);
+  }
+
+  public getSelectedBackendBaseUrl(): Observable<string> {
+    return this.selectedBackend$.asObservable().pipe(
+      map(opt => opt.baseUrl)
+    );
   }
 
 }

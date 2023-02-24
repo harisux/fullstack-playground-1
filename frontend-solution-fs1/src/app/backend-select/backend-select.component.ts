@@ -10,7 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { map, Observable, switchMap, tap } from 'rxjs';
 import { BackendOption } from './models/backend-option';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
@@ -38,6 +38,7 @@ export class BackendSelectComponent implements OnInit {
   //Services
   backendDiscovery = inject(BackendDiscoveryService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   ngOnInit() {
     this.selectedDomainId$ = this.route.paramMap.pipe(map(params => params.get('id')));
@@ -47,6 +48,11 @@ export class BackendSelectComponent implements OnInit {
       })
       ,tap(b => console.log(b))      
     );
+  }
+
+  showProblemDomain(backendOpt: BackendOption): void {
+    this.backendDiscovery.selectBackend(backendOpt);
+    this.router.navigate(['/show'], { relativeTo: this.route }); 
   }
 
 }
