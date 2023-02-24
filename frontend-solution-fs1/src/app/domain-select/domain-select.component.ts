@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Domain } from './models/domain-models';
 import { DomainService } from './services/domain.service';
@@ -28,14 +28,19 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./domain-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DomainSelectComponent {
+export class DomainSelectComponent implements OnInit {
 
-  domainList$: Observable<Domain[]> = this.domainService.getDomainList();
+  domainList$: Observable<Domain[]> | undefined;
 
-  constructor(private domainService: DomainService, private router: Router) {}
-  
+  //Services
+  domainService = inject(DomainService);
+  router = inject(Router);
+
+  ngOnInit(): void {
+    this.domainList$ = this.domainService.getDomainList();
+  }
+
   goToDomain(domain: Domain): void {
-    console.log('hi');
     this.router.navigate(['/domain/' + domain.id]);
   }
 

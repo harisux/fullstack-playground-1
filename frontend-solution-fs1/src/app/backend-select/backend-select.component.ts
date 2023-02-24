@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BackendDiscoveryService } from './services/backend-discovery.service';
 
@@ -34,9 +34,10 @@ import { ChangeDetectionStrategy } from '@angular/core';
 export class BackendSelectComponent implements OnInit {
   selectedDomainId$: Observable<string | null> | undefined;
   backendOptions$: Observable<BackendOption[]> | undefined;
-        
-  constructor(private backendDiscovery: BackendDiscoveryService, 
-              private route: ActivatedRoute) {}
+
+  //Services
+  backendDiscovery = inject(BackendDiscoveryService);
+  route = inject(ActivatedRoute);
 
   ngOnInit() {
     this.selectedDomainId$ = this.route.paramMap.pipe(map(params => params.get('id')));
