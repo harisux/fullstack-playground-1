@@ -26,7 +26,6 @@ import { ChangeDetectionStrategy } from '@angular/core';
     MatListModule,
     MatExpansionModule
   ],
-  providers: [ BackendDiscoveryService ],
   templateUrl: './backend-select.component.html',
   styleUrls: ['./backend-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -52,7 +51,7 @@ export class BackendSelectComponent implements OnInit {
 
   showProblemDomain(backendOpt: BackendOption): void {
     this.backendDiscovery.selectBackend(backendOpt);
-    this.router.navigate(['/show'], { relativeTo: this.route }); 
+    this.router.navigate(['show'], { relativeTo: this.route }); 
   }
 
 }

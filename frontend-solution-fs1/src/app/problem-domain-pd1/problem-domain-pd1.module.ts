@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { FilmsService } from './services/films.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BackendDiscoveryService } from '../backend-select/services/backend-discovery.service';
+import { BackendSelectComponent } from '../backend-select/backend-select.component';
 
 @NgModule({
   declarations: [
@@ -16,13 +17,10 @@ import { BackendDiscoveryService } from '../backend-select/services/backend-disc
   imports: [
     CommonModule,
     HttpClientModule,
+    BackendSelectComponent,
     MatProgressBarModule,
     MatTableModule,
     ProblemDomainPd1RoutingModule
-  ],
-  providers: [
-    FilmsService,
-    BackendDiscoveryService
   ]
 })
 export class ProblemDomainPd1Module { }

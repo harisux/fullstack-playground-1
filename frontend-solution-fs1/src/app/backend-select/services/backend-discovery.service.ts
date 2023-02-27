@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { pipe, map, Observable, Subject } from 'rxjs';
+import { pipe, map, Observable, Subject, BehaviorSubject, tap } from 'rxjs';
 import { Application, BackendDiscovery } from '../models/backend-discovery';
 import { BackendOption, Detail } from '../models/backend-option';
 
@@ -10,7 +10,8 @@ import { BackendOption, Detail } from '../models/backend-option';
 export class BackendDiscoveryService {
 
   private discoveryUrl: string = "http://localhost:8761/eureka/v2/apps";
-  private selectedBackend$: Subject<BackendOption> = new Subject();
+  private selectedBackend$: BehaviorSubject<BackendOption> 
+                              = new BehaviorSubject({} as BackendOption);
   
   readonly TAGS_SEPARATOR = ','; 
   readonly DETAILS_SEPARATOR = '|';
@@ -67,6 +68,7 @@ export class BackendDiscoveryService {
 
   public getSelectedBackendBaseUrl(): Observable<string> {
     return this.selectedBackend$.asObservable().pipe(
+      tap(opt => console.log("selected backend opt: ", opt)),
       map(opt => opt.baseUrl)
     );
   }
