@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
+import {  map, Observable, tap } from 'rxjs';
+import { Film } from '../../models/films';
 import { FilmsService } from '../../services/films.service';
 
 @Component({
@@ -10,14 +11,17 @@ import { FilmsService } from '../../services/films.service';
 })
 export class FilmListComponent implements OnInit {
 
-  dataSource$: Observable<any> | undefined;
-  displayedColumns: string[] = ['title', 'language', 'length', 'rentalRate', 'rating'];
+  filmDataSource$: Observable<Film[]> | undefined;
+  displayedColumns: string[] = ['title', 'name', 'length', 'rental_rate', 'rating'];
 
   //Services
   filmsService = inject(FilmsService);
 
   ngOnInit(): void {
-    this.dataSource$ = this.filmsService.getFilms();
+    this.filmDataSource$ = this.filmsService.getFilms().pipe(
+      tap(films => console.log("films", films)),
+      map(filmsData => filmsData.data )
+    );
   }
 
 }

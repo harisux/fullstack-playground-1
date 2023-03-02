@@ -1,16 +1,20 @@
+export interface FilmsData {
+    data: Film[];
+}
+
 export interface Film {
-    filmId: number;
+    film_id: number;
     title: string;
     description: string;
-    releaseYear: number;
+    release_year: number;
     language: Language;
-    originalLanguage: Language;
-    rentalDuration: number;
-    rentalRate: number;
+    original_language: Language | null;
+    rental_duration: number;
+    rental_rate: number;
     length: number;
-    replacementCost: number;
+    replacement_cost: number;
     rating: string;
-    specialFeatures: string;
+    special_features: string;
 }
 
 export interface Language {

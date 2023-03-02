@@ -1,33 +1,31 @@
 <ng-template #loading>
     <mat-progress-bar mode="query"></mat-progress-bar>
 </ng-template>
-<ng-container *ngIf="dataSource$ | async as dataSource; else loading">
-    <table mat-table [dataSource]="dataSource">
-
+<ng-container *ngIf="filmDataSource$ | async as filmList; else loading">
+    <table mat-table [dataSource]="filmList">
         <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef>Title</th>
-            <td mat-cell *matCellDef="let item">{{item.title}}</td>
+            <td mat-cell *matCellDef="let film">{{film.title}}</td>
         </ng-container>
 
-        <ng-container matColumnDef="language">
+        <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Language</th>
-            <td mat-cell *matCellDef="let item">{{item.language.name}}</td>
+            <td mat-cell *matCellDef="let film">{{film.language.name}}</td>
         </ng-container>
-
         
         <ng-container matColumnDef="length">
             <th mat-header-cell *matHeaderCellDef>Length</th>
-            <td mat-cell *matCellDef="let item">{{item.length + 'min'}}</td>
+            <td mat-cell *matCellDef="let film">{{film.length + 'min'}}</td>
         </ng-container>
 
-        <ng-container matColumnDef="rentalRate">
+        <ng-container matColumnDef="rental_rate">
             <th mat-header-cell *matHeaderCellDef>Rate</th>
-            <td mat-cell *matCellDef="let item">{{item.rentalRate | currency}}</td>
+            <td mat-cell *matCellDef="let film">{{film.rental_rate | currency}}</td>
         </ng-container>
 
         <ng-container matColumnDef="rating">
             <th mat-header-cell *matHeaderCellDef>Rating</th>
-            <td mat-cell *matCellDef="let item">{{item.rating}}</td>
+            <td mat-cell *matCellDef="let film">{{film.rating}}</td>
         </ng-container>
         
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
