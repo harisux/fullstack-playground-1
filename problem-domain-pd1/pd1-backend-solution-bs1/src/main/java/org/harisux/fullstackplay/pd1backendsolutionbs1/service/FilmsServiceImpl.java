@@ -1,5 +1,6 @@
 package org.harisux.fullstackplay.pd1backendsolutionbs1.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.text.CaseUtils;
@@ -41,6 +42,7 @@ public class FilmsServiceImpl implements FilmsService {
         Pageable pageableReq = this.assemblePageableRequest(limit, offset, sortBy, order);
         List<FilmDto> dbFilms = filmsRepository.findAll(pageableReq).toList();
         filmList.setData(filmsMapper.FilmDtoListToFilmList(dbFilms));
+        filmList.setTotalCount(new BigDecimal(filmsRepository.count()));
         return filmList;
     }
 

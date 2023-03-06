@@ -186,6 +186,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/film'
+        total_count:
+          type: number
+          format: int64
     film:
       type: object
       properties:
