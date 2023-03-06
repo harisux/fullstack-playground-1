@@ -15,7 +15,7 @@ export class FilmsService {
   
   public getFilms(): Observable<FilmsData> {
       return this.backendDiscovery.getSelectedBackendBaseUrl().pipe(
-        switchMap(url => this.httpClient.get<FilmsData>(`${url}api/v1/films?limit=5`))
+        switchMap(url => this.httpClient.get<FilmsData>(`${url}api/v1/films?limit=20`))
       );
   }
 
