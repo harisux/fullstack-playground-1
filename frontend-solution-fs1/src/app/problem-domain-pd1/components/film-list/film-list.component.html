@@ -1,8 +1,7 @@
-<ng-template #loading>
-    <mat-progress-bar mode="query"></mat-progress-bar>
-</ng-template>
+
+<mat-progress-bar *ngIf="loading$ | async" mode="query"></mat-progress-bar>
 <div class="container">
-    <ng-container *ngIf="filmDataSource$ | async as filmList; else loading">
+    <ng-container *ngIf="filmDataSource$ | async as filmList">
         <table mat-table [dataSource]="filmList">
             <ng-container matColumnDef="title">
                 <th mat-header-cell *matHeaderCellDef>Title</th>
@@ -33,7 +32,13 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </ng-container>
-    <mat-paginator [ngClass]="{ displayNone: !(filmDataSource$ | async) }" [pageSize]="10" 
-        aria-label="Select page of films"></mat-paginator>
+    
+    <mat-paginator 
+        [ngClass]="{ displayNone: initialLoading$ | async }" 
+        [pageSize]="PAGE_SIZE" 
+        [disabled]="loading$ | async"
+        showFirstLastButtons
+        aria-label="Select page of films">
+    </mat-paginator>
 </div>
 

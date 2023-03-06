@@ -13,9 +13,12 @@ export class FilmsService {
   private httpClient = inject(HttpClient);
   private backendDiscovery = inject(BackendDiscoveryService);
   
-  public getFilms(): Observable<FilmsData> {
+  public getFilms(pageSize: number, pageIndex: number): Observable<FilmsData> {
+      const offset = pageIndex * pageSize;
+      const limit = pageSize;
       return this.backendDiscovery.getSelectedBackendBaseUrl().pipe(
-        switchMap(url => this.httpClient.get<FilmsData>(`${url}api/v1/films?limit=20`))
+        switchMap(url => this.httpClient.get<FilmsData>(
+            `${url}api/v1/films?offset=${offset}&limit=${limit}`))
       );
   }
 

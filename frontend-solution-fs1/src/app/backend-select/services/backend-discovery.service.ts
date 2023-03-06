@@ -68,7 +68,6 @@ export class BackendDiscoveryService {
 
   public getSelectedBackendBaseUrl(): Observable<string> {
     return this.selectedBackend$.asObservable().pipe(
-      tap(opt => console.log("selected backend opt: ", opt)),
       map(opt => opt.baseUrl)
     );
   }

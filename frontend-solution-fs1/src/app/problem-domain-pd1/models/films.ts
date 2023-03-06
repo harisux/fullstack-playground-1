@@ -1,5 +1,6 @@
 export interface FilmsData {
     data: Film[];
+    total_count: number;
 }
 
 export interface Film {

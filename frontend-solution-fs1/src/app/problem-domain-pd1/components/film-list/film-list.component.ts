@@ -1,8 +1,8 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import {  delay, map, Observable, tap } from 'rxjs';
-import { Film } from '../../models/films';
+import {  BehaviorSubject, delay, first, map, Observable, startWith, switchMap, take, tap } from 'rxjs';
+import { Film, FilmsData } from '../../models/films';
 import { FilmsService } from '../../services/films.service';
 
 @Component({
@@ -11,27 +11,58 @@ import { FilmsService } from '../../services/films.service';
   styleUrls: ['./film-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FilmListComponent implements OnInit {
+export class FilmListComponent implements OnInit, AfterViewInit {
+
+  loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  initialLoading$: Observable<boolean> | undefined;
 
   filmDataSource$: Observable<MatTableDataSource<Film>> | undefined;
   displayedColumns: string[] = ['title', 'name', 'length', 'rental_rate', 'rating'];
 
+  readonly PAGE_SIZE: number = 5;
+
   //Services
   filmsService = inject(FilmsService);
 
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator | undefined;
 
   ngOnInit(): void {
-    this.filmDataSource$ = this.filmsService.getFilms().pipe(
-      //delay(500),
-      tap(films => console.log("films", films)),
-      map(filmsData => { 
-        let filmsDataSource = new MatTableDataSource(filmsData.data);
-        console.log('paginator', this.paginator);
-        filmsDataSource.paginator = this.paginator ? this.paginator : null;
-        return filmsDataSource;
-      })
+    this.checkForPageChanges();
+    this.setupInitialLoading();
+  }
+
+  ngAfterViewInit(): void {
+    this.emitInitialPageEvent();
+  }
+
+  setupInitialLoading(): void {
+    this.initialLoading$ = this.loading$?.pipe(
+      take(3),
+      map(loading => loading)
     );
   }
   
+  emitInitialPageEvent(): void {
+    this.paginator?.page.emit({ pageIndex: 0, pageSize: 0, length: 0 });
+  }
+
+  checkForPageChanges(): void {
+    this.filmDataSource$ = this.paginator?.page.pipe(
+      tap(_ => this.loading$.next(true)),
+      switchMap(_ => {
+        const pageIndex = this.paginator?.pageIndex ? this.paginator?.pageIndex : 0;
+        return this.filmsService.getFilms(this.PAGE_SIZE, pageIndex);
+      }),
+      delay(1500), //simulating network delay
+      tap(_ => this.loading$.next(false)),
+      map(filmsData => this.setupFilmsDataSource(filmsData))
+    );
+  }
+
+  setupFilmsDataSource(filmsData: FilmsData): MatTableDataSource<Film> {
+    let filmsDataSource = new MatTableDataSource(filmsData.data);
+    if (this.paginator) { this.paginator.length = filmsData.total_count; }
+    return filmsDataSource;
+  }
+
 }
