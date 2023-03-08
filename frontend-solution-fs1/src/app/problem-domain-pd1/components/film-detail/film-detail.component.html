@@ -1,0 +1,5 @@
+<div *ngIf="selectedFilm$ | async as film">
+    <p>id : {{film.film_id}}</p>
+    <p>title: {{film.title}}</p>
+    <p>description: {{film.description}}</p>
+</div>

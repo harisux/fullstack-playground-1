@@ -1,14 +1,19 @@
-table {
-    width: 100%;
-}
-
 .container {
     display: flex;
     flex-direction: column;
     height: 80%;
+    align-content: center;
     overflow-y: scroll;
 }
 
 .displayNone {
     display: none;
+}
+
+tr.mat-row:hover {
+    background-color: yellow;
+}
+
+tr.hoverableRow:hover {
+    background: #777;
 }

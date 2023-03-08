@@ -8,7 +8,7 @@ import { Film, FilmsData } from '../models/films';
   providedIn: 'root'
 })
 export class FilmsService {
-  
+
   //Services
   private httpClient = inject(HttpClient);
   private backendDiscovery = inject(BackendDiscoveryService);
@@ -21,5 +21,11 @@ export class FilmsService {
             `${url}api/v1/films?offset=${offset}&limit=${limit}`))
       );
   }
+
+  public getFilm(filmId: string): Observable<Film> {
+    return this.backendDiscovery.getSelectedBackendBaseUrl().pipe(
+      switchMap(url => this.httpClient.get<Film>(`${url}api/v1/films/${filmId}`))
+    );
+}
 
 }
