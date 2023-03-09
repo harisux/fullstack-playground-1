@@ -10,6 +10,10 @@ import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
 import { BackendSelectComponent } from '../backend-select/backend-select.component';
 import { FilmDetailComponent } from './components/film-detail/film-detail.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input'; 
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -19,11 +23,15 @@ import { FilmDetailComponent } from './components/film-detail/film-detail.compon
   imports: [
     CommonModule,
     HttpClientModule,
+    ReactiveFormsModule,
     BackendSelectComponent,
     MatProgressBarModule,
     MatTableModule,
     MatPaginatorModule,
     MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
     ProblemDomainPd1RoutingModule
   ]
 })

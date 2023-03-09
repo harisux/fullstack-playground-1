@@ -38,7 +38,7 @@
     </mat-card>
     
     <mat-paginator 
-        [ngClass]="{ displayNone: initialLoading$ | async }" 
+        [ngClass]="{ 'display-none': initialLoading$ | async }" 
         [pageSize]="PAGE_SIZE" 
         [disabled]="loading$ | async"
         showFirstLastButtons
