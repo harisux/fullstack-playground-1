@@ -14,11 +14,11 @@ import org.harisux.fullstackplay.pd1backendsolutionbs1.persistence.entity.FilmDt
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 
-@Component
+@Service
 public class FilmsServiceImpl implements FilmsService {
 
     @Autowired

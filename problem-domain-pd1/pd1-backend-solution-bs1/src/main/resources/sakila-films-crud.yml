@@ -177,6 +177,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /languages:
+    get:
+      summary: Gets a list existing languages
+      tags: 
+        - languages
+      operationId: getLanguages
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/languageList'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     filmList:
@@ -234,6 +253,13 @@ components:
         last_update:
           type: string
           format: date-time
+    languageList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/language'
     Error:
       type: object
       properties:
