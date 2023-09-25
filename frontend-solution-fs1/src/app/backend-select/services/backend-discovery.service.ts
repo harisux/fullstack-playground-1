@@ -37,6 +37,7 @@ export class BackendDiscoveryService {
         problemDomainId: inst.metadata.problemDomainId,
         summary: inst.metadata.summary,
         tags: this.assembleTags(inst.metadata.tags),
+        source: inst.metadata.sourceLink,
         details: this.assembleDetails(inst.metadata.detailsList)
       };
       backendOptions.push(backendOpt);

@@ -5,6 +5,7 @@ export interface BackendOption {
     problemDomainId: string;
     summary: string;
     tags: string[];
+    source: string;
     details: Detail[]; 
 }
 

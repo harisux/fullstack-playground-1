@@ -23,5 +23,6 @@ export interface Metadata {
     title: string;
     summary: string;
     tags: string;
+    sourceLink: string;
     detailsList: string;
 }

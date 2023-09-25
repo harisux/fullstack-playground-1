@@ -3,6 +3,9 @@
     <h2>Lets choose a backend solution for domain: {{selectedDomainId$ | async}}!</h2>
     <mat-card class="option-card" *ngFor="let opt of backendOptions$ | async">
         <mat-card-header>
+            <div mat-card-avatar>
+                <a [href]="opt.source"><mat-icon svgIcon="github"></mat-icon></a>
+            </div>
             <mat-card-title>{{opt.title}}</mat-card-title>
             <mat-card-subtitle>ID: {{opt.id}}</mat-card-subtitle>
         </mat-card-header>

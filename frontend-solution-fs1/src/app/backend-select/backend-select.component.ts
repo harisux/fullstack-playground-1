@@ -12,6 +12,7 @@ import { map, Observable, switchMap, tap } from 'rxjs';
 import { BackendOption } from './models/backend-option';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-backend-select',
@@ -24,7 +25,8 @@ import { ChangeDetectionStrategy } from '@angular/core';
     MatDividerModule,
     MatChipsModule,
     MatListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatIconModule,
   ],
   templateUrl: './backend-select.component.html',
   styleUrls: ['./backend-select.component.scss'],
