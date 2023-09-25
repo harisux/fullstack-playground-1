@@ -26,6 +26,6 @@ export class FilmsService {
     return this.backendDiscovery.getSelectedBackendBaseUrl().pipe(
       switchMap(url => this.httpClient.get<Film>(`${url}api/v1/films/${filmId}`))
     );
-}
+  }
 
 }

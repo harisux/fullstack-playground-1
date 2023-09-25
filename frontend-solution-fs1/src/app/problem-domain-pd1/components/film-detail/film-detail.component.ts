@@ -13,6 +13,7 @@ import { FilmsService } from '../../services/films.service';
 export class FilmDetailComponent implements OnInit {
 
   selectedFilm$: Observable<Film> | undefined;
+  languages$: Observable<any> | undefined;
   
   //Services
   filmsService = inject(FilmsService);
@@ -23,6 +24,21 @@ export class FilmDetailComponent implements OnInit {
   filmForm = this.fb.group({
     title: ['', Validators.required],
     description: '',
+    release_year: [0, Validators.required],
+    language: this.fb.group({
+      language_id: 0,
+      name: ''
+    }),
+    original_language: this.fb.group({
+      language_id: 0,
+      name: ''
+    }),
+    rental_duration: 0,
+    rental_rate: 0,
+    length: 0,
+    replacement_cost: 0,
+    rating: ['', Validators.required],
+    special_features: '',
   });
 
   ngOnInit(): void {
@@ -34,8 +50,12 @@ export class FilmDetailComponent implements OnInit {
   }
 
   initializeForm(film: Film): void {
-    this.filmForm.controls.title.setValue(film.title);
-    this.filmForm.controls.description.setValue(film.description); 
+    this.filmForm.patchValue({
+      title: film.title,
+      description: film.description,
+      release_year: film.release_year,
+
+    });
   }
 
   submitFilm(): void {
