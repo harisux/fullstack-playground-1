@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { BackendDiscoveryService } from 'src/app/backend-select/services/backend-discovery.service';
-import { Film, FilmsData } from '../models/films';
+import { Film, FilmsData, Language, LanguagesData } from '../models/films';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,13 @@ export class FilmsService {
   public getFilm(filmId: string): Observable<Film> {
     return this.backendDiscovery.getSelectedBackendBaseUrl().pipe(
       switchMap(url => this.httpClient.get<Film>(`${url}api/v1/films/${filmId}`))
+    );
+  }
+
+  public getLanguages(): Observable<Language[]> {
+    return this.backendDiscovery.getSelectedBackendBaseUrl().pipe(
+      switchMap(url => this.httpClient.get<LanguagesData>(`${url}api/v1/languages`)),
+      map(langData => langData.data)
     );
   }
 

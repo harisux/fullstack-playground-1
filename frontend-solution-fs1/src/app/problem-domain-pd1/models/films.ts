@@ -22,3 +22,7 @@ export interface Language {
     language_id: number;
     name: string;
 }
+
+export interface LanguagesData {
+    data: Language[];
+}

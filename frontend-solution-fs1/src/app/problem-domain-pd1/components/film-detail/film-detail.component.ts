@@ -1,9 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable, switchMap, tap } from 'rxjs';
-import { Film } from '../../models/films';
+import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
+import { Film, Language } from '../../models/films';
 import { FilmsService } from '../../services/films.service';
+
+interface FormData {
+  film: Film;
+  languages: Language[];
+}
 
 @Component({
   selector: 'app-film-detail',
@@ -12,8 +17,7 @@ import { FilmsService } from '../../services/films.service';
 })
 export class FilmDetailComponent implements OnInit {
 
-  selectedFilm$: Observable<Film> | undefined;
-  languages$: Observable<any> | undefined;
+  formData$: Observable<FormData> | undefined;
   
   //Services
   filmsService = inject(FilmsService);
@@ -25,10 +29,7 @@ export class FilmDetailComponent implements OnInit {
     title: ['', Validators.required],
     description: '',
     release_year: [0, Validators.required],
-    language: this.fb.group({
-      language_id: 0,
-      name: ''
-    }),
+    language_id: [0, Validators.required],
     original_language: this.fb.group({
       language_id: 0,
       name: ''
@@ -42,10 +43,14 @@ export class FilmDetailComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.selectedFilm$ = this.route.paramMap.pipe(
-        map(params => params.get('id')),
-        switchMap(id => this.filmsService.getFilm(id || '0')),
-        tap(film => this.initializeForm(film))
+    const languages$ = this.filmsService.getLanguages();
+    const film$ = this.route.paramMap.pipe(
+      map(params => params.get('id')),
+      switchMap(id => this.filmsService.getFilm(id || '0'))
+    );
+    this.formData$ = combineLatest([languages$, film$]).pipe(
+        map(([languages, film]) => { return { languages, film }; }),
+        tap(formData => this.initializeForm(formData.film))
     );
   }
 
@@ -54,7 +59,7 @@ export class FilmDetailComponent implements OnInit {
       title: film.title,
       description: film.description,
       release_year: film.release_year,
-
+      language_id: film.language.language_id
     });
   }
 
