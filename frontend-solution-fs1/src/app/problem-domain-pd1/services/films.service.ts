@@ -35,4 +35,11 @@ export class FilmsService {
     );
   }
 
+  public updateFilm(film: Film): Observable<any> {
+    return this.backendDiscovery.getSelectedBackendBaseUrl().pipe(
+      switchMap(url => this.httpClient.put<Film>(`${url}api/v1/films`, film))
+    ); 
+  }
+
+
 }

@@ -10,6 +10,12 @@ interface FormData {
   languages: Language[];
 }
 
+const FILM_RATINGS = [
+  'G', 'PG', 'PG-13', 'R', 'NC-17'
+];
+
+const MAX_DOLLAR_COST = 999999;
+
 @Component({
   selector: 'app-film-detail',
   templateUrl: './film-detail.component.html',
@@ -18,6 +24,7 @@ interface FormData {
 export class FilmDetailComponent implements OnInit {
 
   formData$: Observable<FormData> | undefined;
+  filmRatings: string[] = FILM_RATINGS;
   
   //Services
   filmsService = inject(FilmsService);
@@ -28,16 +35,12 @@ export class FilmDetailComponent implements OnInit {
   filmForm = this.fb.group({
     title: ['', Validators.required],
     description: '',
-    release_year: [0, Validators.required],
+    release_year: [0, [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
     language_id: [0, Validators.required],
-    original_language: this.fb.group({
-      language_id: 0,
-      name: ''
-    }),
-    rental_duration: 0,
-    rental_rate: 0,
-    length: 0,
-    replacement_cost: 0,
+    rental_duration: [0, Validators.pattern(/^\d{1,4}$/)],
+    rental_rate: [0, [Validators.min(0), Validators.max(MAX_DOLLAR_COST)]],
+    length: [0, Validators.pattern(/^\d{1,3}$/)],
+    replacement_cost: [0, [Validators.min(0), Validators.max(MAX_DOLLAR_COST)]],
     rating: ['', Validators.required],
     special_features: '',
   });
@@ -59,12 +62,17 @@ export class FilmDetailComponent implements OnInit {
       title: film.title,
       description: film.description,
       release_year: film.release_year,
-      language_id: film.language.language_id
+      language_id: film.language.language_id,
+      rental_duration: film.rental_duration,
+      rental_rate: film.rental_rate,
+      length: film.length,
+      replacement_cost: film.replacement_cost,
+      rating: film.rating
     });
   }
 
   submitFilm(): void {
-
+    console.log(this.filmForm.value);
   }
 
 }
