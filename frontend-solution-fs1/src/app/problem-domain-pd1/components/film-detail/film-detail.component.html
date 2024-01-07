@@ -1,3 +1,4 @@
+<mat-progress-bar *ngIf="loading$ | async" mode="query"></mat-progress-bar>
 <ng-container *ngIf="(formData$ | async) as formData">
     <mat-card class="cards-container">
         <mat-card-header>

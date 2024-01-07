@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, combineLatest, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { Film, Language } from '../../models/films';
 import { FilmsService } from '../../services/films.service';
 
@@ -23,6 +23,9 @@ const MAX_DOLLAR_COST = 999999;
 })
 export class FilmDetailComponent implements OnInit {
 
+  loading$ = new BehaviorSubject<boolean>(true);
+  destroyed$ = new Subject<void>();
+
   formData$: Observable<FormData> | undefined;
   filmRatings: string[] = FILM_RATINGS;
   
@@ -30,6 +33,7 @@ export class FilmDetailComponent implements OnInit {
   filmsService = inject(FilmsService);
   route = inject(ActivatedRoute);
   fb = inject(FormBuilder);
+  router = inject(Router);
 
   //Form
   filmForm = this.fb.group({
@@ -52,9 +56,16 @@ export class FilmDetailComponent implements OnInit {
       switchMap(id => this.filmsService.getFilm(id || '0'))
     );
     this.formData$ = combineLatest([languages$, film$]).pipe(
+        tap(_ => this.loading$.next(true)),
         map(([languages, film]) => { return { languages, film }; }),
-        tap(formData => this.initializeForm(formData.film))
+        tap(formData => this.initializeForm(formData.film)),
+        tap(_ => this.loading$.next(false)),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   initializeForm(film: Film): void {
@@ -72,7 +83,37 @@ export class FilmDetailComponent implements OnInit {
   }
 
   submitFilm(): void {
-    console.log(this.filmForm.value);
+    const filmId = Number(this.route.snapshot.paramMap.get('id'));
+    const filmToUpdate = this.assembleFilmToUpdate(filmId);
+    
+    this.loading$.next(true);
+    this.filmsService.updateFilm(filmToUpdate)
+      .pipe(takeUntil(this.destroyed$)).subscribe(_ => {
+        this.loading$.next(false);
+        this.router.navigate(['../../'], { relativeTo: this.route });
+      });
+  }
+
+  assembleFilmToUpdate(filmId: number): Film {
+    const formValue = this.filmForm.value;
+    let film: Film = {
+      film_id: filmId,
+      title: formValue.title || '',
+      description: formValue.description || '',
+      release_year: formValue.release_year || 1900,
+      language: { 
+        language_id: formValue.language_id || 0,
+        name: ''
+      },
+      original_language: null,
+      rental_duration: formValue.rental_duration || 0,
+      rental_rate: formValue.rental_rate || 0,
+      length: formValue.length || 0,
+      replacement_cost: formValue.replacement_cost || 0,
+      rating: formValue.rating || '',
+      special_features: formValue.special_features || ''
+    };
+    return film;
   }
 
 }
