@@ -81,8 +81,8 @@
                 </mat-form-field>
     
                 <div class="center">
-                    <button mat-button type="submit" [disabled]="!filmForm.valid">Submit</button>
-                    <button mat-button type="button" [routerLink]="['../../']">Cancel</button>
+                    <button mat-button type="submit" [disabled]="!filmForm.valid || !filmForm.dirty">Submit</button>
+                    <button mat-button type="button" (click)="goBack()">Cancel</button>
                 </div>
             </form>
         </mat-card-content>

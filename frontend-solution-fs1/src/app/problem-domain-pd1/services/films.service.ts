@@ -41,5 +41,10 @@ export class FilmsService {
     ); 
   }
 
+  public addFilm(film: Film): Observable<any> {
+    return this.backendDiscovery.getSelectedBackendBaseUrl().pipe(
+      switchMap(url => this.httpClient.post<Film>(`${url}api/v1/films`, film))
+    ); 
+  }
 
 }

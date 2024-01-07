@@ -17,3 +17,10 @@ tr.mat-row:hover {
 tr.hoverableRow:hover {
     background: #777;
 }
+
+.right-align {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    margin: 0px 10px 3px 0px;
+}

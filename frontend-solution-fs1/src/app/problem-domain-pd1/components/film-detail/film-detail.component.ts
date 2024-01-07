@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { Film, Language } from '../../models/films';
 import { FilmsService } from '../../services/films.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { of } from 'rxjs';
 
 interface FormData {
   film: Film;
@@ -34,9 +36,11 @@ export class FilmDetailComponent implements OnInit {
   route = inject(ActivatedRoute);
   fb = inject(FormBuilder);
   router = inject(Router);
+  snackBar = inject(MatSnackBar);
 
   //Form
   filmForm = this.fb.group({
+    film_id: 0,
     title: ['', Validators.required],
     description: '',
     release_year: [0, [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
@@ -53,7 +57,27 @@ export class FilmDetailComponent implements OnInit {
     const languages$ = this.filmsService.getLanguages();
     const film$ = this.route.paramMap.pipe(
       map(params => params.get('id')),
-      switchMap(id => this.filmsService.getFilm(id || '0'))
+      switchMap(id => {
+        if (id && Number(id) > 0) { //Editing
+          return this.filmsService.getFilm(id);
+        } else { //Creating new
+          const newFilm: Film = {
+            film_id: -1, //Using id -1 to identify create
+            title: '',
+            description: '',
+            release_year: 0,
+            language: { language_id: 0, name: '' },
+            original_language: null,
+            rental_duration: 0,
+            rental_rate: 0.00,
+            length: 0,
+            replacement_cost: 0.00,
+            rating: '',
+            special_features: ''
+          }
+          return of(newFilm);
+        }
+      })
     );
     this.formData$ = combineLatest([languages$, film$]).pipe(
         tap(_ => this.loading$.next(true)),
@@ -70,6 +94,7 @@ export class FilmDetailComponent implements OnInit {
 
   initializeForm(film: Film): void {
     this.filmForm.patchValue({
+      film_id: film.film_id,
       title: film.title,
       description: film.description,
       release_year: film.release_year,
@@ -82,22 +107,42 @@ export class FilmDetailComponent implements OnInit {
     });
   }
 
-  submitFilm(): void {
-    const filmId = Number(this.route.snapshot.paramMap.get('id'));
-    const filmToUpdate = this.assembleFilmToUpdate(filmId);
-    
-    this.loading$.next(true);
-    this.filmsService.updateFilm(filmToUpdate)
-      .pipe(takeUntil(this.destroyed$)).subscribe(_ => {
-        this.loading$.next(false);
-        this.router.navigate(['../../'], { relativeTo: this.route });
-      });
+  goBack(): void {
+    let backPath: string;
+    if (this.filmForm.value.film_id !== -1) { //Updating
+      backPath = '../../';
+    } else { //Creating
+      backPath = '../';
+    }
+    this.router.navigate([backPath], { relativeTo: this.route });
   }
 
-  assembleFilmToUpdate(filmId: number): Film {
+  submitFilm(): void {
+    const filmToSubmit = this.filmFromForm();
+    
+    this.loading$.next(true);
+
+    if (filmToSubmit.film_id !== -1) { //Updating
+      this.filmsService.updateFilm(filmToSubmit)
+        .pipe(takeUntil(this.destroyed$)).subscribe(_ => {
+          this.loading$.next(false);
+          this.snackBar.open("Film updated!", "Ok", { duration: 2000 });
+          this.router.navigate(['../../'], { relativeTo: this.route });
+        });
+    } else { //Creating
+      this.filmsService.addFilm(filmToSubmit)
+        .pipe(takeUntil(this.destroyed$)).subscribe(_ => {
+          this.loading$.next(false);
+          this.snackBar.open("Film added!", "Ok", { duration: 2000 });
+          this.router.navigate(['../'], { relativeTo: this.route });
+        });
+    }
+  }
+
+  filmFromForm(): Film {
     const formValue = this.filmForm.value;
     let film: Film = {
-      film_id: filmId,
+      film_id: formValue.film_id || 0,
       title: formValue.title || '',
       description: formValue.description || '',
       release_year: formValue.release_year || 1900,

@@ -1,5 +1,6 @@
 
 <mat-progress-bar *ngIf="loading$ | async" mode="query"></mat-progress-bar>
+<div class="right-align"><button mat-flat-button color="warn" (click)="goToNew()">+New Film</button></div>
 <div class="container">
     <mat-card *ngIf="filmDataSource$ | async as filmList">
         <mat-card-content>

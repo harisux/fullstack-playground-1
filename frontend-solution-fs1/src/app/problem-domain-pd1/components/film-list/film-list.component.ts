@@ -72,4 +72,8 @@ export class FilmListComponent implements OnInit, AfterViewInit {
     this.router.navigate(['film/' + film.film_id], { relativeTo: this.route });
   }
 
+  goToNew(): void {
+    this.router.navigate(['film'], { relativeTo: this.route });
+  }
+
 }
