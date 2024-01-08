@@ -29,6 +29,15 @@
                     <th mat-header-cell *matHeaderCellDef>Rating</th>
                     <td mat-cell *matCellDef="let film">{{film.rating}}</td>
                 </ng-container>
+
+                <ng-container matColumnDef="delete">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let film">
+                        <button mat-mini-fab class="custom-fab-size" color="accent" (click)="delete(film, $event)">
+                            <mat-icon class="custom-icon-size">delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
                 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;" 

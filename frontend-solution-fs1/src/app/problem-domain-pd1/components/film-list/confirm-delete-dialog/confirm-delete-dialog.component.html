@@ -1,0 +1,8 @@
+  <h1 mat-dialog-title>Deleting...</h1>
+  <div mat-dialog-content>
+    <p>Are you sure to delete the film <i>{{dialogData.title}}</i> ?</p>
+  </div>
+  <div mat-dialog-actions>
+      <button mat-flat-button color="warn" (click)="closeDialog(true)">Yes</button>
+      <button mat-flat-button color="primary" (click)="closeDialog(false)">No</button>
+  </div>

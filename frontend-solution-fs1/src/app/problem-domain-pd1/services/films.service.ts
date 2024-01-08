@@ -47,4 +47,10 @@ export class FilmsService {
     ); 
   }
 
+  public deleteFilm(filmId: string): Observable<any> {
+    return this.backendDiscovery.getSelectedBackendBaseUrl().pipe(
+      switchMap(url => this.httpClient.delete<any>(`${url}api/v1/films/${filmId}`))
+    );
+  }
+
 }

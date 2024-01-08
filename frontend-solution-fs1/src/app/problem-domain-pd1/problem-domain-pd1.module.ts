@@ -16,11 +16,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { ConfirmDeleteDialogComponent } from './components/film-list/confirm-delete-dialog/confirm-delete-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     FilmListComponent,
-    FilmDetailComponent
+    FilmDetailComponent,
+    ConfirmDeleteDialogComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +40,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatIconModule,
+    MatDialogModule,
     ProblemDomainPd1RoutingModule
   ]
 })

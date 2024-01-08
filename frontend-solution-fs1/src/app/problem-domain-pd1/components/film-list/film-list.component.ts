@@ -2,9 +2,12 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, i
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import {  BehaviorSubject, delay, first, map, Observable, startWith, switchMap, take, tap } from 'rxjs';
+import {  BehaviorSubject, delay, first, map, mergeWith, Observable, of, startWith, Subject, switchMap, take, tap } from 'rxjs';
 import { Film, FilmsData } from '../../models/films';
 import { FilmsService } from '../../services/films.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDeleteDialogComponent } from './confirm-delete-dialog/confirm-delete-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-film-list',
@@ -16,9 +19,10 @@ export class FilmListComponent implements OnInit, AfterViewInit {
 
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   initialLoading$: Observable<boolean> | undefined;
+  filmDeletedEvt$ = new Subject<Film>();
 
   filmDataSource$: Observable<MatTableDataSource<Film>> | undefined;
-  displayedColumns: string[] = ['title', 'name', 'length', 'rental_rate', 'rating'];
+  displayedColumns: string[] = ['title', 'name', 'length', 'rental_rate', 'rating', 'delete'];
 
   readonly PAGE_SIZE: number = 10;
 
@@ -26,11 +30,13 @@ export class FilmListComponent implements OnInit, AfterViewInit {
   filmsService = inject(FilmsService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  dialog = inject(MatDialog);
+  snackBar = inject(MatSnackBar);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator | undefined;
 
   ngOnInit(): void {
-    this.checkForPageChanges();
+    this.checkForDataChanges();
     this.setupInitialLoading();
   }
 
@@ -49,8 +55,14 @@ export class FilmListComponent implements OnInit, AfterViewInit {
     this.paginator?.page.emit({ pageIndex: 0, pageSize: 0, length: 0 });
   }
 
-  checkForPageChanges(): void {
+  checkForDataChanges(): void {
+    const filmDeleted$ = this.filmDeletedEvt$.pipe(
+      switchMap(film => this.filmsService.deleteFilm(film.film_id.toString())),
+      tap(_ => this.snackBar.open("Film deleted!", "Ok", { duration: 2000 }))
+    );
+
     this.filmDataSource$ = this.paginator?.page.pipe(
+      mergeWith(filmDeleted$),
       tap(_ => this.loading$.next(true)),
       switchMap(_ => {
         const pageIndex = this.paginator?.pageIndex ? this.paginator?.pageIndex : 0;
@@ -74,6 +86,14 @@ export class FilmListComponent implements OnInit, AfterViewInit {
 
   goToNew(): void {
     this.router.navigate(['film'], { relativeTo: this.route });
+  }
+
+  delete(film: Film, event: any): void {
+    event.stopPropagation();
+    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, { data: film});
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) { this.filmDeletedEvt$.next(film); }
+    });
   }
 
 }
