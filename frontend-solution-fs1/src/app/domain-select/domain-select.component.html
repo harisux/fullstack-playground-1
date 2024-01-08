@@ -3,12 +3,12 @@
     <h2>Lets choose a problem domain!</h2>
     <mat-card class="domain-card" *ngFor="let domain of domainList$ | async">
         <mat-card-header>
-            <mat-card-title>{{domain.title}}</mat-card-title>
+            <mat-card-title class="white-font">{{domain.title}}</mat-card-title>
             <mat-card-subtitle>ID: {{domain.id}}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <br>
-            <p>{{domain.summary}}</p>
+            <p class="white-font">{{domain.summary}}</p>
             <mat-divider></mat-divider>
             <mat-chip-set *ngIf="domain.tags.length">
                 <mat-chip *ngFor="let tag of domain.tags">{{tag}}</mat-chip>
@@ -16,8 +16,8 @@
             <ng-container *ngIf="domain.additionals.length">
                 <br>
                 <ng-container *ngFor="let additional of domain.additionals">
-                    <h5>*{{additional.title}}:</h5>
-                    <p>{{additional.content}}</p>
+                    <h5 class="white-font">*{{additional.title}}:</h5>
+                    <p class="white-font">{{additional.content}}</p>
                 </ng-container>
             </ng-container>
         </mat-card-content>

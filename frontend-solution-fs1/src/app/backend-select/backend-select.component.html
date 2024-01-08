@@ -6,12 +6,12 @@
             <div mat-card-avatar>
                 <a [href]="opt.source"><mat-icon svgIcon="github"></mat-icon></a>
             </div>
-            <mat-card-title>{{opt.title}}</mat-card-title>
+            <mat-card-title class="white-font">{{opt.title}}</mat-card-title>
             <mat-card-subtitle>ID: {{opt.id}}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <br>
-            <p>{{opt.summary}}</p>
+            <p class="white-font">{{opt.summary}}</p>
             <mat-divider></mat-divider>
             <mat-chip-set *ngIf="opt.tags.length">
                 <mat-chip *ngFor="let tag of opt.tags">{{tag}}</mat-chip>
