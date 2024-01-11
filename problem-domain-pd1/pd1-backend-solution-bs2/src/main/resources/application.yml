@@ -1,0 +1,16 @@
+quarkus:
+  http:
+    port: 8081
+  resteasy:
+    path: /api/v1
+  openapi-generator:
+    codegen:
+      spec:
+        sakila_films_crud_yml:
+          return-response: true
+  datasource:
+    db-kind: mysql
+    username: sakilauser1
+    password: sakilauser1
+    jdbc:
+      url: jdbc:mysql://localhost:3306/sakila
