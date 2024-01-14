@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.harisux.fullstackplay.exception.FilmNotFoundException;
 import org.jboss.logging.Logger;
 import org.openapi.quarkus.sakila_films_crud_yml.model.Film;
 import org.openapi.quarkus.sakila_films_crud_yml.model.Language;
@@ -59,7 +60,8 @@ public class FilmsServiceImpl implements FilmsService {
                     film.setRating(rs.getString("rating"));
                     film.setSpecialFeatures(rs.getString("special_features"));
                 } else {
-                    throw new RuntimeException("Film not found!");
+                    String errMsg = String.format("Film not found <id=%s>", id);
+                    throw new FilmNotFoundException(errMsg);
                 }
             }
         } catch(SQLException exp) {

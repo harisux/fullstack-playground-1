@@ -1,9 +1,9 @@
 package org.harisux.fullstackplay.rest;
 
+import org.harisux.fullstackplay.exception.ResponseExceptionHandler;
 import org.harisux.fullstackplay.service.FilmsService;
 import org.openapi.quarkus.sakila_films_crud_yml.api.FilmsApi;
 import org.openapi.quarkus.sakila_films_crud_yml.model.Film;
-import org.openapi.quarkus.sakila_films_crud_yml.model.FilmList;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
@@ -12,6 +12,9 @@ public class FilmsApiImpl implements FilmsApi {
 
     @Inject
     FilmsService filmsService;
+
+    @Inject
+    ResponseExceptionHandler exceptionHandler;
 
     @Override
     public Response createFilm(Film film) {
@@ -27,13 +30,10 @@ public class FilmsApiImpl implements FilmsApi {
 
     @Override
     public Response getFilm(Integer id) {
-        try {
+        return exceptionHandler.handle(() -> {
             return Response.status(200)
-                    .entity(filmsService.getFilm(id)).build();
-        } catch (Exception exp) {
-            return Response.status(500)
-                    .entity("Something went wrong...").build();   
-        }
+                .entity(filmsService.getFilm(id)).build();
+        });
     }
 
     @Override
