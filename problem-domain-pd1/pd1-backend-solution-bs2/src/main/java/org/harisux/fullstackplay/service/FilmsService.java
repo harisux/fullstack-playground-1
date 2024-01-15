@@ -10,5 +10,6 @@ public interface FilmsService {
     public FilmList getFilmList(Integer limit, 
             Integer offset, String sortBy, String order) throws Exception;
 
-
+    public Film createFilm(Film film) throws Exception;
+    
 }

@@ -19,8 +19,10 @@ public class FilmsApiImpl implements FilmsApi {
 
     @Override
     public Response createFilm(Film film) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createFilm'");
+        return exceptionHandler.handle(() -> {
+            return Response.status(HttpStatus.SC_OK)
+                .entity(filmsService.createFilm(film)).build();
+        });
     }
 
     @Override

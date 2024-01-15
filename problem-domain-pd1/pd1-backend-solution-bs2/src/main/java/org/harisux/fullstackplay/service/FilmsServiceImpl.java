@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +57,7 @@ public class FilmsServiceImpl implements FilmsService {
                 }
             }
         } catch(SQLException exp) {
-            LOG.error("Failed to execute query to get film");
+            LOG.error("Failed to execute query to fetch film");
             throw exp;
         }
         return film;
@@ -109,7 +111,7 @@ public class FilmsServiceImpl implements FilmsService {
                 }
             }
         } catch(SQLException exp) {
-            LOG.error("Failed to execute query to get film list");
+            LOG.error("Failed to execute query to fetch film list");
             throw exp;
         }
 
@@ -117,6 +119,64 @@ public class FilmsServiceImpl implements FilmsService {
 
         return filmList;
     }
+
+    @Override
+    public Film createFilm(Film film) throws Exception {
+        String query = """
+            insert into film ( 
+                title, description, release_year, language_id,
+                original_language_id, rental_duration, rental_rate, length, 
+                replacement_cost, rating, special_features, last_update
+            ) values (
+                ?,?,?,?,?,?,?,?,?,?,?,?
+            )
+        """;
+        try (
+            Connection conn = dataSource.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+        ) {
+            pstmt.setString(1, film.getTitle());
+            pstmt.setString(2, film.getDescription());
+            pstmt.setInt(3, film.getReleaseYear());
+            pstmt.setInt(4, film.getLanguage().getLanguageId());
+            pstmt.setNull(5, Types.INTEGER); // original lang id as null
+            pstmt.setBigDecimal(6, film.getRentalDuration());
+            pstmt.setFloat(7, film.getRentalRate());
+            pstmt.setBigDecimal(8, film.getLength());
+            pstmt.setFloat(9, film.getReplacementCost());
+            pstmt.setString(10, film.getRating());
+            pstmt.setString(11, film.getSpecialFeatures());
+            pstmt.setTimestamp(12, new Timestamp(System.currentTimeMillis()));
+            pstmt.executeUpdate();
+
+            film.setFilmId(getInsertId(conn));
+            
+        } catch(SQLException exp) {
+            LOG.error("Failed to execute query to insert film");
+            throw exp;
+        }
+        return film;
+    }
+
+    private Integer getInsertId(Connection conn) throws Exception {
+        Integer insertId;
+        String query = "select LAST_INSERT_ID()";
+        try (
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+        ) {
+            if (rs.next()) {
+                insertId = rs.getInt(1);
+            } else {
+                throw new RuntimeException("No insert id found!");
+            }
+        } catch(SQLException exp) {
+            LOG.error("Failed to execute query to fetch last insert id");
+            throw exp;
+        }
+        return insertId;
+    }
+    
 
     private String sanitizeFilmSortField(String sortFieldIn) {
         String sortField = "F.film_id"; //default
