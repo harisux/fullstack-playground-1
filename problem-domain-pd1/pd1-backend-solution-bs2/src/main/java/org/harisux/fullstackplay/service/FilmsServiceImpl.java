@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.harisux.fullstackplay.exception.FilmNotFoundException;
@@ -19,7 +18,6 @@ import org.openapi.quarkus.sakila_films_crud_yml.model.Language;
 import io.agroal.api.AgroalDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class FilmsServiceImpl implements FilmsService {
