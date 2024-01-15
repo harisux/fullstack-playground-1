@@ -1,5 +1,6 @@
 package org.harisux.fullstackplay.rest;
 
+import org.apache.http.HttpStatus;
 import org.harisux.fullstackplay.exception.ResponseExceptionHandler;
 import org.harisux.fullstackplay.service.FilmsService;
 import org.openapi.quarkus.sakila_films_crud_yml.api.FilmsApi;
@@ -31,15 +32,17 @@ public class FilmsApiImpl implements FilmsApi {
     @Override
     public Response getFilm(Integer id) {
         return exceptionHandler.handle(() -> {
-            return Response.status(200)
+            return Response.status(HttpStatus.SC_OK)
                 .entity(filmsService.getFilm(id)).build();
         });
     }
 
     @Override
     public Response getFilmList(Integer limit, Integer offset, String sortBy, String order) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFilmList'");
+        return exceptionHandler.handle(() -> {
+            return Response.status(HttpStatus.SC_OK)
+                .entity(filmsService.getFilmList(limit, offset, sortBy, order)).build();
+        });
     }
 
     @Override

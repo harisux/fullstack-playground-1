@@ -1,5 +1,6 @@
 package org.harisux.fullstackplay.exception;
 
+import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -14,11 +15,14 @@ public class ResponseExceptionHandler {
         try {
             return callback.get();
         } catch (FilmNotFoundException exp) {
-            return Response.status(404)
+            return Response.status(HttpStatus.SC_NOT_FOUND)
+                    .entity(exp.getMessage()).build();   
+        } catch (MissingParameterException exp) {
+            return Response.status(HttpStatus.SC_BAD_REQUEST)
                     .entity(exp.getMessage()).build();   
         } catch (Exception exp) {
             LOG.error(exp.getMessage());
-            return Response.status(500)
+            return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR)
                     .entity("Something went wrong...").build();   
         }
     }
