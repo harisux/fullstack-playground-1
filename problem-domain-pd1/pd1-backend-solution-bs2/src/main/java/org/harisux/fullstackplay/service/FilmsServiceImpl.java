@@ -158,6 +158,25 @@ public class FilmsServiceImpl implements FilmsService {
         return film;
     }
 
+    @Override
+    public void deleteFilm(Integer id) throws Exception {
+        //Validation to check if exists (would throw error otherwise)
+        Film film = this.getFilm(id); 
+
+        String query = "delete from film where film_id = ?";
+        try (
+            Connection conn = dataSource.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+        ) {
+            pstmt.setInt(1, film.getFilmId());
+            pstmt.executeUpdate();
+            
+        } catch(SQLException exp) {
+            LOG.error("Failed to execute query to delete film");
+            throw exp;
+        }
+    }
+
     private Integer getInsertId(Connection conn) throws Exception {
         Integer insertId;
         String query = "select LAST_INSERT_ID()";

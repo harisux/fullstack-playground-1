@@ -11,5 +11,7 @@ public interface FilmsService {
             Integer offset, String sortBy, String order) throws Exception;
 
     public Film createFilm(Film film) throws Exception;
-    
+
+    public void deleteFilm(Integer id) throws Exception;
+
 }

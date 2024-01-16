@@ -27,8 +27,10 @@ public class FilmsApiImpl implements FilmsApi {
 
     @Override
     public Response deleteFilm(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteFilm'");
+        return exceptionHandler.handle(() -> {
+            filmsService.deleteFilm(id);
+            return Response.status(HttpStatus.SC_NO_CONTENT).build();
+        });
     }
 
     @Override
