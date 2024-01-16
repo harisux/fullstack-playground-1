@@ -177,6 +177,44 @@ public class FilmsServiceImpl implements FilmsService {
         }
     }
 
+    @Override
+    public Film updateFilm(Film film) throws Exception {
+        //Validation to check if exists (would throw error otherwise)
+        Film existsFilm = this.getFilm(film.getFilmId()); 
+
+        String query = """
+            update film set
+                title = ?, description = ?, release_year = ?, language_id = ?,
+                original_language_id = ?, rental_duration = ?, rental_rate = ?, length = ?, 
+                replacement_cost = ?, rating = ?, special_features = ?, last_update = ?
+            where film_id = ?
+        """;
+        try (
+            Connection conn = dataSource.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+        ) {
+            pstmt.setString(1, film.getTitle());
+            pstmt.setString(2, film.getDescription());
+            pstmt.setInt(3, film.getReleaseYear());
+            pstmt.setInt(4, film.getLanguage().getLanguageId());
+            pstmt.setNull(5, Types.INTEGER); // original lang id as null
+            pstmt.setBigDecimal(6, film.getRentalDuration());
+            pstmt.setFloat(7, film.getRentalRate());
+            pstmt.setBigDecimal(8, film.getLength());
+            pstmt.setFloat(9, film.getReplacementCost());
+            pstmt.setString(10, film.getRating());
+            pstmt.setString(11, film.getSpecialFeatures());
+            pstmt.setTimestamp(12, new Timestamp(System.currentTimeMillis()));
+            pstmt.setInt(13, existsFilm.getFilmId());
+            pstmt.executeUpdate();
+            
+        } catch(SQLException exp) {
+            LOG.error("Failed to execute query to update film");
+            throw exp;
+        }
+        return film;
+    }
+
     private Integer getInsertId(Connection conn) throws Exception {
         Integer insertId;
         String query = "select LAST_INSERT_ID()";

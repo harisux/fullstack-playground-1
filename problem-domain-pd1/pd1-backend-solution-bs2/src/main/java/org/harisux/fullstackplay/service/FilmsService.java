@@ -14,4 +14,6 @@ public interface FilmsService {
 
     public void deleteFilm(Integer id) throws Exception;
 
+    public Film updateFilm(Film film) throws Exception;
+
 }
