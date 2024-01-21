@@ -29,16 +29,16 @@ export class BackendDiscoveryService {
 
   private mapApplicationToBackendOptions(discoveryResp: BackendDiscovery): BackendOption[] {
     let backendOptions: BackendOption[] = [];
-    discoveryResp.applications.application[0].instance.forEach(inst => {
+    discoveryResp.applications.application.forEach(app => {
       let backendOpt: BackendOption = {
-        baseUrl: inst.homePageUrl,
-        id: inst.app,
-        title: inst.metadata.title,
-        problemDomainId: inst.metadata.problemDomainId,
-        summary: inst.metadata.summary,
-        tags: this.assembleTags(inst.metadata.tags),
-        source: inst.metadata.sourceLink,
-        details: this.assembleDetails(inst.metadata.detailsList)
+        baseUrl: app.instance[0].homePageUrl,
+        id: app.instance[0].app,
+        title: app.instance[0].metadata.title,
+        problemDomainId: app.instance[0].metadata.problemDomainId,
+        summary: app.instance[0].metadata.summary,
+        tags: this.assembleTags(app.instance[0].metadata.tags),
+        source: app.instance[0].metadata.sourceLink,
+        details: this.assembleDetails(app.instance[0].metadata.detailsList)
       };
       backendOptions.push(backendOpt);
     });
