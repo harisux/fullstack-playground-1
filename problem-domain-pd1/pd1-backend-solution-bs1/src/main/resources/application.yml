@@ -22,7 +22,7 @@ eureka:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
-    preferIpAddress: true
+    hostname: localhost
     metadata-map:
       problemDomainId: pd1
       title: Java Spring MVC Sakila Films CRUD
