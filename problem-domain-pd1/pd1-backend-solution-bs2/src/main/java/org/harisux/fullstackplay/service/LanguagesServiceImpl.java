@@ -1,6 +1,5 @@
 package org.harisux.fullstackplay.service;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +8,6 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 import org.jboss.logging.Logger;
-import org.openapi.quarkus.sakila_films_crud_yml.model.Film;
 import org.openapi.quarkus.sakila_films_crud_yml.model.Language;
 import org.openapi.quarkus.sakila_films_crud_yml.model.LanguageList;
 

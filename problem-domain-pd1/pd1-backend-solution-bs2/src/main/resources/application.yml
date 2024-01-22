@@ -1,6 +1,13 @@
 quarkus:
+  application:
+    name: pd1-backend-solution-bs2
   http:
     port: 8081
+    cors:
+      ~: true
+      origins: /.*/
+      headers: Content-Type
+      methods: GET,PUT,POST,DELETE
   resteasy:
     path: /api/v1
   openapi-generator:
@@ -8,6 +15,18 @@ quarkus:
       spec:
         sakila_films_crud_yml:
           return-response: true
+  eureka:
+    service-url: 
+      default: http://localhost:8761/eureka
+    host-name: localhost
+    metadata:
+      problemDomainId: pd1
+      title: Java Quarkus JDBC Sakila Films CRUD
+      summary: Solution based on Quarkus framework and the Java programming language. Imperative approach with plain JDBC. 
+      tags: Java, Quarkus, JDBC
+      sourceLink: https://github.com/harisux/fullstack-playground-1/tree/main/problem-domain-pd1/pd1-backend-solution-bs2
+      detailsList: "Language: Java | Framework: Quarkus | Approach: Imperative JDBC | Key libraries: Eureka client, RESTEasy, JDBC | Build: Maven, OpenAPI generator plugin" 
+  
   datasource:
     db-kind: mysql
     username: sakilauser1
