@@ -35,8 +35,8 @@ public class FilmsServiceImpl implements FilmsService {
         String query = """
             select 
                 F.film_id, F.title, F.description, F.release_year, F.language_id,
-                L.name, F.rental_rate, F.length, F.replacement_cost, F.rating, 
-                F.special_features
+                L.name, F.rental_duration, F.rental_rate, F.length, F.replacement_cost, 
+                F.rating, F.special_features
             from film F
             left join language L on F.language_id = L.language_id 
             where film_id = ?
@@ -74,14 +74,13 @@ public class FilmsServiceImpl implements FilmsService {
 
         FilmList filmList = new FilmList();
         filmList.setData(new ArrayList<>());
-        long totalCount = 0; 
         boolean hasOffset = offset != null && offset > 0;
 
         String query = """
             select 
                 F.film_id, F.title, F.description, F.release_year, F.language_id,
-                L.name, F.rental_rate, F.length, F.replacement_cost, F.rating, 
-                F.special_features
+                L.name, F.rental_duration, F.rental_rate, F.length, F.replacement_cost, 
+                F.rating, F.special_features
             from film F
             left join language L on F.language_id = L.language_id 
         """;
@@ -107,7 +106,6 @@ public class FilmsServiceImpl implements FilmsService {
                 while (rs.next()) {
                     Film film = this.populateFilmFromRs(rs);
                     filmList.addDataItem(film);
-                    totalCount++;
                 }
             }
         } catch(SQLException exp) {
@@ -115,6 +113,8 @@ public class FilmsServiceImpl implements FilmsService {
             throw exp;
         }
 
+        //Total count
+        long totalCount = getFilmsTotalCount();
         filmList.setTotalCount(new BigDecimal(totalCount));
 
         return filmList;
@@ -215,6 +215,24 @@ public class FilmsServiceImpl implements FilmsService {
         return film;
     }
 
+    public long getFilmsTotalCount() throws Exception {
+        String query = "select count(*) as total_count from film";
+        long totalCount = 0;
+        try (
+            Connection conn = dataSource.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+        ) {
+            if (rs.next()) {
+                totalCount = rs.getLong("total_count");
+            } 
+        } catch(SQLException exp) {
+            LOG.error("Failed to execute query to count total for films");
+            throw exp;
+        }
+        return totalCount;
+    }
+
     private Integer getInsertId(Connection conn) throws Exception {
         Integer insertId;
         String query = "select LAST_INSERT_ID()";
@@ -269,6 +287,7 @@ public class FilmsServiceImpl implements FilmsService {
         lang.setName(rs.getString("name"));
         film.setLanguage(lang);
 
+        film.setRentalDuration(rs.getBigDecimal("rental_duration"));
         film.setRentalRate(rs.getFloat("rental_rate"));
         film.setLength(rs.getBigDecimal("length"));
         film.setReplacementCost(rs.getFloat("replacement_cost"));
