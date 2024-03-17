@@ -1,0 +1,360 @@
+openapi: 3.0.0
+info:
+  title: Sakila Films CRUD API
+  version: "1.0"
+servers:
+- url: /api/v1
+paths:
+  /films:
+    get:
+      operationId: getFilmList
+      parameters:
+      - description: number of films to skip before collecting
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          format: int32
+          minimum: 0
+          type: integer
+        style: form
+      - description: number of films to limit
+        explode: true
+        in: query
+        name: limit
+        required: true
+        schema:
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - description: field to sort list of films
+        explode: true
+        in: query
+        name: sort_by
+        required: false
+        schema:
+          default: film_id
+          enum:
+          - film_id
+          - title
+          - release_year
+          - rental_rate
+          - length
+          - rating
+          type: string
+        style: form
+      - description: ascending or descending order
+        explode: true
+        in: query
+        name: order
+        required: false
+        schema:
+          default: asc
+          enum:
+          - asc
+          - desc
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/filmList'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Gets a list of all films
+      tags:
+      - films
+    post:
+      operationId: createFilm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/film'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/film'
+          description: Film created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Creates a new film
+      tags:
+      - films
+    put:
+      operationId: updateFilm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/film'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/film'
+          description: Film updated
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not able to update film
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Updates an existing film
+      tags:
+      - Films
+  /films/{id}:
+    delete:
+      operationId: deleteFilm
+      parameters:
+      - description: Film ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Deleted film
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Film not found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Deletes a film by id
+      tags:
+      - films
+    get:
+      operationId: getFilm
+      parameters:
+      - description: Film ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/film'
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Film not found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Gets a film by id
+      tags:
+      - films
+  /languages:
+    get:
+      operationId: getLanguages
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/languageList'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error
+      summary: Gets a list existing languages
+      tags:
+      - languages
+components:
+  schemas:
+    filmList:
+      example:
+        data:
+        - special_features: special_features
+          rental_duration: 5.962133916683182
+          original_language:
+            last_update: 2000-01-23T04:56:07.000+00:00
+            name: name
+            language_id: 1
+          rental_rate: 5.637377
+          release_year: 6
+          length: 2.3021358869347655
+          replacement_cost: 7.0614014
+          rating: rating
+          description: description
+          language:
+            last_update: 2000-01-23T04:56:07.000+00:00
+            name: name
+            language_id: 1
+          title: title
+          last_update: 2000-01-23T04:56:07.000+00:00
+          film_id: 0
+        - special_features: special_features
+          rental_duration: 5.962133916683182
+          original_language:
+            last_update: 2000-01-23T04:56:07.000+00:00
+            name: name
+            language_id: 1
+          rental_rate: 5.637377
+          release_year: 6
+          length: 2.3021358869347655
+          replacement_cost: 7.0614014
+          rating: rating
+          description: description
+          language:
+            last_update: 2000-01-23T04:56:07.000+00:00
+            name: name
+            language_id: 1
+          title: title
+          last_update: 2000-01-23T04:56:07.000+00:00
+          film_id: 0
+        total_count: 9.301444243932576
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/film'
+          type: array
+        total_count:
+          format: int64
+          type: number
+      type: object
+    film:
+      example:
+        special_features: special_features
+        rental_duration: 5.962133916683182
+        original_language:
+          last_update: 2000-01-23T04:56:07.000+00:00
+          name: name
+          language_id: 1
+        rental_rate: 5.637377
+        release_year: 6
+        length: 2.3021358869347655
+        replacement_cost: 7.0614014
+        rating: rating
+        description: description
+        language:
+          last_update: 2000-01-23T04:56:07.000+00:00
+          name: name
+          language_id: 1
+        title: title
+        last_update: 2000-01-23T04:56:07.000+00:00
+        film_id: 0
+      properties:
+        film_id:
+          format: int32
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        release_year:
+          format: int32
+          type: integer
+        language:
+          $ref: '#/components/schemas/language'
+        original_language:
+          $ref: '#/components/schemas/language'
+        rental_duration:
+          type: number
+        rental_rate:
+          format: float
+          type: number
+        length:
+          type: number
+        replacement_cost:
+          format: float
+          type: number
+        rating:
+          type: string
+        special_features:
+          type: string
+        last_update:
+          format: date-time
+          type: string
+      type: object
+    language:
+      example:
+        last_update: 2000-01-23T04:56:07.000+00:00
+        name: name
+        language_id: 1
+      properties:
+        language_id:
+          format: int32
+          type: integer
+        name:
+          type: string
+        last_update:
+          format: date-time
+          type: string
+      type: object
+    languageList:
+      example:
+        data:
+        - last_update: 2000-01-23T04:56:07.000+00:00
+          name: name
+          language_id: 1
+        - last_update: 2000-01-23T04:56:07.000+00:00
+          name: name
+          language_id: 1
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/language'
+          type: array
+      type: object
+    Error:
+      example:
+        title: title
+        message: message
+      properties:
+        title:
+          type: string
+        message:
+          type: string
+      type: object

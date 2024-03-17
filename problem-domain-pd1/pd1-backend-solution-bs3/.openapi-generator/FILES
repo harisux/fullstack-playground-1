@@ -1,0 +1,16 @@
+.openapi-generator-ignore
+README.md
+api/openapi.yaml
+openapi/api.go
+openapi/api_films.go
+openapi/api_languages.go
+openapi/error.go
+openapi/helpers.go
+openapi/impl.go
+openapi/logger.go
+openapi/model_error.go
+openapi/model_film.go
+openapi/model_film_list.go
+openapi/model_language.go
+openapi/model_language_list.go
+openapi/routers.go
