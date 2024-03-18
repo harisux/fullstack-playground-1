@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"pd1-backend-solution-bs3/openapi"
+	"pd1-backend-solution-bs3/repo"
 )
 
 type FilmsAPIService struct{}
@@ -67,12 +68,16 @@ func (s *FilmsAPIService) GetFilmList(ctx context.Context, limit int32, offset i
 	// Add api_films_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
 	// TODO: Uncomment the next line to return response Response(200, FilmList{}) or use other options such as http.Ok ...
-	// return Response(200, FilmList{}), nil
+	filmList, err := repo.GetFilms()
+	if err != nil {
+		return openapi.Response(500, openapi.Error{Title: "Error", Message: "Internal Error"}), err
+	}
+	return openapi.Response(200, filmList), nil
 
 	// TODO: Uncomment the next line to return response Response(0, Error{}) or use other options such as http.Ok ...
 	// return Response(0, Error{}), nil
 
-	return openapi.Response(http.StatusNotImplemented, nil), errors.New("GetFilmList method not implemented")
+	//return openapi.Response(http.StatusNotImplemented, nil), errors.New("GetFilmList method not implemented")
 }
 
 // UpdateFilm - Updates an existing film
