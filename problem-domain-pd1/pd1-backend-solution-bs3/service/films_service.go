@@ -68,7 +68,7 @@ func (s *FilmsAPIService) GetFilmList(ctx context.Context, limit int32, offset i
 	// Add api_films_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
 	// TODO: Uncomment the next line to return response Response(200, FilmList{}) or use other options such as http.Ok ...
-	filmList, err := repo.GetFilms()
+	filmList, err := repo.GetFilms(int(limit), int(offset), sortBy, order)
 	if err != nil {
 		return openapi.Response(500, openapi.Error{Title: "Error", Message: "Internal Error"}), err
 	}
