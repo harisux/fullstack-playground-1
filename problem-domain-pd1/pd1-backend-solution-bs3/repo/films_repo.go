@@ -68,6 +68,29 @@ func GetFilms(limit, offset int, sortBy, order string) (openapi.FilmList, error)
 	return openapi.FilmList{Data: films, TotalCount: float32(totalCount)}, nil
 }
 
+func GetFilm(filmId int) (openapi.Film, error) {
+	query := `
+		select 
+			F.film_id, F.title, F.description, F.release_year, F.language_id,
+			L.name, F.rental_duration, F.rental_rate, F.length, F.replacement_cost, 
+			F.rating, F.special_features
+		from film F
+		left join language L on F.language_id = L.language_id 
+		where film_id = ?
+    `
+	row := db.QueryRow(query, filmId)
+
+	film := openapi.Film{}
+	if err := row.Scan(
+		&film.FilmId, &film.Title, &film.Description, &film.ReleaseYear, &film.Language.LanguageId,
+		&film.Language.Name, &film.RentalDuration, &film.RentalRate, &film.Length, &film.ReplacementCost,
+		&film.Rating, &film.SpecialFeatures,
+	); err != nil {
+		return openapi.Film{}, err
+	}
+	return film, nil
+}
+
 func sanitizeSortField(sortFieldIn string) string {
 	sortField := "F.film_id"
 	allowedOpts := []string{"title", "description", "release_year",

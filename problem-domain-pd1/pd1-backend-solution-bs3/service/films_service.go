@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"net/http"
 	"pd1-backend-solution-bs3/openapi"
@@ -51,7 +52,14 @@ func (s *FilmsAPIService) GetFilm(ctx context.Context, id int32) (openapi.ImplRe
 	// Add api_films_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
 	// TODO: Uncomment the next line to return response Response(200, Film{}) or use other options such as http.Ok ...
-	// return Response(200, Film{}), nil
+	film, err := repo.GetFilm(int(id))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return openapi.Response(404, openapi.Error{Title: "Error", Message: "Film not found"}), nil
+		}
+		return openapi.Response(500, openapi.Error{Title: "Error", Message: "Internal Error"}), nil
+	}
+	return openapi.Response(200, film), nil
 
 	// TODO: Uncomment the next line to return response Response(404, Error{}) or use other options such as http.Ok ...
 	// return Response(404, Error{}), nil
@@ -70,7 +78,7 @@ func (s *FilmsAPIService) GetFilmList(ctx context.Context, limit int32, offset i
 	// TODO: Uncomment the next line to return response Response(200, FilmList{}) or use other options such as http.Ok ...
 	filmList, err := repo.GetFilms(int(limit), int(offset), sortBy, order)
 	if err != nil {
-		return openapi.Response(500, openapi.Error{Title: "Error", Message: "Internal Error"}), err
+		return openapi.Response(500, openapi.Error{Title: "Error", Message: "Internal Error"}), nil
 	}
 	return openapi.Response(200, filmList), nil
 
