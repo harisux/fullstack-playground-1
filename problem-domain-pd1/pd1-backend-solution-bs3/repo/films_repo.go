@@ -121,6 +121,36 @@ func CreateFilm(film openapi.Film) (openapi.Film, error) {
 	return film, nil
 }
 
+func UpdateFilm(film openapi.Film) (openapi.Film, error) {
+	query := `
+		update film set
+			title = ?, description = ?, release_year = ?, language_id = ?,
+			original_language_id = ?, rental_duration = ?, rental_rate = ?, length = ?, 
+			replacement_cost = ?, rating = ?, special_features = ?, last_update = ?
+		where film_id = ?
+    `
+
+	_, err := db.Exec(query,
+		film.Title, film.Description, film.ReleaseYear, film.Language.LanguageId,
+		nil, film.RentalDuration, film.RentalRate, film.Length,
+		film.ReplacementCost, film.Rating, film.SpecialFeatures, time.Now(),
+		film.FilmId,
+	)
+	if err != nil {
+		return openapi.Film{}, err
+	}
+
+	return film, nil
+}
+
+func DeleteFilm(filmId int) error {
+	_, err := db.Exec("delete from film where film_id = ?", filmId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func sanitizeSortField(sortFieldIn string) string {
 	sortField := "F.film_id"
 	allowedOpts := []string{"title", "description", "release_year",
