@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"pd1-backend-solution-bs3/openapi"
 	"strings"
+	"time"
 )
 
 func GetFilms(limit, offset int, sortBy, order string) (openapi.FilmList, error) {
@@ -88,6 +89,35 @@ func GetFilm(filmId int) (openapi.Film, error) {
 	); err != nil {
 		return openapi.Film{}, err
 	}
+	return film, nil
+}
+
+func CreateFilm(film openapi.Film) (openapi.Film, error) {
+	query := `
+		insert into film ( 
+			title, description, release_year, language_id,
+			original_language_id, rental_duration, rental_rate, length, 
+			replacement_cost, rating, special_features, last_update
+		) values (
+			?,?,?,?,?,?,?,?,?,?,?,?
+		)
+    `
+
+	res, err := db.Exec(query,
+		film.Title, film.Description, film.ReleaseYear, film.Language.LanguageId,
+		nil, film.RentalDuration, film.RentalRate, film.Length,
+		film.ReplacementCost, film.Rating, film.SpecialFeatures, time.Now(),
+	)
+	if err != nil {
+		return openapi.Film{}, err
+	}
+
+	newFilmId, err := res.LastInsertId()
+	if err != nil {
+		return openapi.Film{}, err
+	}
+
+	film.FilmId = int32(newFilmId)
 	return film, nil
 }
 
