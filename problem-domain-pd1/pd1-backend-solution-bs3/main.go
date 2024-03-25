@@ -3,9 +3,12 @@ package main
 import (
 	"log"
 	"net/http"
+	"pd1-backend-solution-bs3/eureka"
 	"pd1-backend-solution-bs3/openapi"
 	"pd1-backend-solution-bs3/repo"
 	"pd1-backend-solution-bs3/service"
+
+	"github.com/gorilla/handlers"
 )
 
 func startRestServer() {
@@ -16,10 +19,16 @@ func startRestServer() {
 
 	router := openapi.NewRouter(filmsAPIController)
 
-	log.Fatal(http.ListenAndServe(":8082", router))
+	//Cors config
+	origins := handlers.AllowedOrigins([]string{"*"})
+	headers := handlers.AllowedHeaders([]string{"Content-Type"})
+	methods := handlers.AllowedMethods([]string{"GET", "PUT", "POST", "DELETE"})
+
+	log.Fatal(http.ListenAndServe(":8082", handlers.CORS(origins, headers, methods)(router)))
 }
 
 func main() {
 	repo.ConnectToDb()
+	eureka.RegisterClient()
 	startRestServer()
 }
