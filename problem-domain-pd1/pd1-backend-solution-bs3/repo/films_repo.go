@@ -48,7 +48,6 @@ func GetFilms(limit, offset int, sortBy, order string) (openapi.FilmList, error)
 	defer rows.Close()
 
 	films := []openapi.Film{}
-	totalCount := 0
 	for rows.Next() {
 		film := openapi.Film{}
 		if err := rows.Scan(
@@ -59,10 +58,16 @@ func GetFilms(limit, offset int, sortBy, order string) (openapi.FilmList, error)
 			return openapi.FilmList{}, err
 		}
 		films = append(films, film)
-		totalCount++
 	}
 
 	if err := rows.Err(); err != nil {
+		return openapi.FilmList{}, err
+	}
+
+	countRow := db.QueryRow("select count(*) from film")
+
+	var totalCount int
+	if err := countRow.Scan(&totalCount); err != nil {
 		return openapi.FilmList{}, err
 	}
 
