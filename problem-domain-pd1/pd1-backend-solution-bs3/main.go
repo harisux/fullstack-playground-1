@@ -17,7 +17,10 @@ func startRestServer() {
 	filmsAPIService := service.NewFilmsAPIService()
 	filmsAPIController := openapi.NewFilmsAPIController(filmsAPIService)
 
-	router := openapi.NewRouter(filmsAPIController)
+	languagesAPIService := service.NewLanguagesAPIService()
+	languagesAPIController := openapi.NewLanguagesAPIController(languagesAPIService)
+
+	router := openapi.NewRouter(filmsAPIController, languagesAPIController)
 
 	//Cors config
 	origins := handlers.AllowedOrigins([]string{"*"})

@@ -30,8 +30,8 @@ func RegisterClient() {
 	instance.Metadata = &eureka.MetaData{Map: make(map[string]string)}
 	instance.Metadata.Map["problemDomainId"] = "pd1"
 	instance.Metadata.Map["title"] = "Golang SQL Sakila Films CRUD"
-	instance.Metadata.Map["summary"] = " Solution based on the Go programming language. Imperative approach with plain SQL."
-	instance.Metadata.Map["tags"] = "Go, SQL, Mux"
+	instance.Metadata.Map["summary"] = "Solution based on the Go programming language. Imperative approach with plain SQL."
+	instance.Metadata.Map["tags"] = "Go, SQL, Gorilla Mux"
 	instance.Metadata.Map["sourceLink"] = "https://github.com/harisux/fullstack-playground-1/tree/main/problem-domain-pd1/pd1-backend-solution-bs3"
 	instance.Metadata.Map["detailsList"] = "Language: Go | Approach: Imperative SQL | Key libraries: Eureka client, Gorilla Mux, Go SQL | Extra: OpenAPI Go Generator"
 
