@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.0</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>org.harisux.fullstackplay</groupId>
+	<artifactId>pd1-backend-solution-bs4</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>pd1-backend-solution-bs4</name>
+	<description>Backend solution project 4 for the problem domain 1</description>
+	
+	<properties>
+		<java.version>17</java.version>
+		<spring-cloud.version>2024.0.0</spring-cloud.version>
+		<r2dbc.mysql.version>1.2.0</r2dbc.mysql.version>
+
+		<!-- utilities -->
+		<lombok.version>1.18.26</lombok.version>
+		<mapstruct.version>1.5.3.Final</mapstruct.version>
+		<commons-text.version>1.9</commons-text.version>
+
+		<!-- openapi versions -->
+		<jackson-databind-nullable.version>0.2.4</jackson-databind-nullable.version>
+		<javax-annotation-api.version>1.3.2</javax-annotation-api.version>
+		<validation-api.version>2.0.1.Final</validation-api.version>
+		<javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+		<swagger-annotations.version>2.2.8</swagger-annotations.version>
+		<swagger-models.version>2.2.8</swagger-models.version>
+		<okhttp.version>4.10.0</okhttp.version>
+		<gson.version>2.11.0</gson.version>
+		<logging-interceptor.version>4.10.0-RC1</logging-interceptor.version>
+		<gson-fire.version>1.8.5</gson-fire.version>
+
+		<!-- plugins -->
+		<openapi-generator-maven-plugin.version>7.10.0</openapi-generator-maven-plugin.version>
+		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+	</properties>
+
+	<dependencies>
+		<!-- main spring deps -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-r2dbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.asyncer</groupId>
+			<artifactId>r2dbc-mysql</artifactId>
+			<version>${r2dbc.mysql.version}</version>
+		</dependency>
+
+		<!-- service discovery deps -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency> -->
+
+		<!-- utility deps -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${mapstruct.version}</version> 
+		</dependency>
+		<dependency>
+    		<groupId>org.apache.commons</groupId>
+    		<artifactId>commons-text</artifactId>
+    		<version>${commons-text.version}</version>
+		</dependency>
+
+		<!-- testing deps -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- openapi deps -->
+		<dependency>
+    		<groupId>org.openapitools</groupId>
+    		<artifactId>jackson-databind-nullable</artifactId>
+    		<version>${jackson-databind-nullable.version}</version>
+		</dependency>
+		<dependency>
+      		<groupId>javax.annotation</groupId>
+      		<artifactId>javax.annotation-api</artifactId>
+      		<version>${javax-annotation-api.version}</version>
+    	</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${validation-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-annotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-models</artifactId>
+			<version>${swagger-models.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>${okhttp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>logging-interceptor</artifactId>
+			<version>${logging-interceptor.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gsonfire</groupId>
+			<artifactId>gson-fire</artifactId>
+			<version>${gson-fire.version}</version>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>${openapi-generator-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>src/main/resources/sakila-films-crud.yml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>org.harisux.fullstackplay.openapi.api</apiPackage>
+							<modelPackage>org.harisux.fullstackplay.openapi.model</modelPackage>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<configOptions>
+								<reactive>true</reactive>
+								<useResponseEntity>false</useResponseEntity>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>netflix-candidates</id>
+			<name>Netflix Candidates</name>
+			<url>https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+</project>

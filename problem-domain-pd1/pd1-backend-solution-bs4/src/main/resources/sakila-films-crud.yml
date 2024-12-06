@@ -1,0 +1,272 @@
+openapi: '3.0.0'
+info:
+  title: Sakila Films CRUD API
+  version: '1.0'
+servers:
+  - url: /api/v1
+paths:
+  /films:
+    get:
+      summary: Gets a list of all films
+      tags: 
+        - films
+      operationId: getFilmList
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+          description: number of films to skip before collecting
+        - in: query
+          name: limit
+          required: true
+          schema: 
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+          description: number of films to limit
+        - in: query
+          name: sort_by
+          schema: 
+            type: string
+            enum:
+              - film_id
+              - title
+              - release_year
+              - rental_rate
+              - length
+              - rating
+            default: film_id
+          description: field to sort list of films
+        - in: query
+          name: order
+          schema: 
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+          description: ascending or descending order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/filmList'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Creates a new film
+      tags: 
+        - films
+      operationId: createFilm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/film'
+      responses:
+        '201':
+          description: Film created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/film'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Updates an existing film
+      tags: 
+        - Films
+      operationId: updateFilm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/film'
+      responses:
+        '200':
+          description: Film updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/film'
+        '409':
+          description: Not able to update film
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /films/{id}:
+    get:
+      summary: Gets a film by id
+      tags:
+        - films
+      operationId: getFilm
+      parameters:
+        - name: id
+          in: path
+          description: Film ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/film'
+        '404':
+          description: Film not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletes a film by id
+      tags:
+        - films
+      operationId: deleteFilm
+      parameters:
+        - name: id
+          in: path
+          description: Film ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: Deleted film
+        '404':
+          description: Film not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /languages:
+    get:
+      summary: Gets a list existing languages
+      tags: 
+        - languages
+      operationId: getLanguages
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/languageList'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    filmList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/film'
+        total_count:
+          type: number
+          format: int64
+    film:
+      type: object
+      properties:
+        film_id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        release_year:
+          type: integer
+          format: int32
+        language:
+          $ref: '#/components/schemas/language'
+        original_language:
+          $ref: '#/components/schemas/language'
+        rental_duration:
+          type: number
+        rental_rate:
+          type: number
+          format: float
+        length:
+          type: number
+        replacement_cost:
+          type: number
+          format: float
+        rating:
+          type: string
+        special_features:
+          type: string
+        last_update:
+          type: string
+          format: date-time
+    language:
+      type: object
+      properties:
+        language_id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        last_update:
+          type: string
+          format: date-time
+    languageList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/language'
+    Error:
+      type: object
+      properties:
+        title:
+          type: string
+        message:
+          type: string
+        
+        
+

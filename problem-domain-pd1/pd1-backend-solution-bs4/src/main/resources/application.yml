@@ -1,0 +1,29 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: pd1-backend-solution-bs4
+  profiles:
+    active: debug
+
+r2dbc:
+  host: localhost
+  port: 3306
+  database: sakila
+  username: sakilauser1
+  password: sakilauser1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    hostname: localhost
+    metadata-map:
+      problemDomainId: pd1
+      title: Java Spring Reactive Sakila Films CRUD
+      summary: Solution based on Spring framework and the Java programming language. Reactive approach with WebFlux + Data R2DBC. 
+      tags: Java, Spring, WebFlux, Reactive, Data R2DBC
+      sourceLink: https://github.com/harisux/fullstack-playground-1/tree/main/problem-domain-pd1/pd1-backend-solution-bs4
+      detailsList: "Language: Java | Framework: Spring | Approach: Reactive WebFlux | Key libraries: Eureka client, Spring WebFlux, Data R2DBC | Build: Maven, OpenAPI generator plugin" 
