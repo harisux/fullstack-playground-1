@@ -4,6 +4,7 @@ import org.harisux.fullstackplay.openapi.api.FilmsApi;
 import org.harisux.fullstackplay.openapi.model.Film;
 import org.harisux.fullstackplay.pd1backendsolutionbs4.service.FilmsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
@@ -18,8 +19,8 @@ public class FilmsApiImpl implements FilmsApi {
     FilmsService filmsService;
 
     @Override
-    public Mono<Film> getFilm(Integer id, ServerWebExchange exchange) {
-        return filmsService.getFilm(id);
+    public Mono<ResponseEntity<Film>> getFilm(Integer id, ServerWebExchange exchange) {
+        return filmsService.getFilm(id).map(film -> ResponseEntity.ok(film));
     }
 
   
