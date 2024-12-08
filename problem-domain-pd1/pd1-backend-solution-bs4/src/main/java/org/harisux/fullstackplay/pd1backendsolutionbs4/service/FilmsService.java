@@ -1,4 +1,4 @@
-package org.harisux.fullstackplay.pd1_backend_solution_bs4.service;
+package org.harisux.fullstackplay.pd1backendsolutionbs4.service;
 
 import org.harisux.fullstackplay.openapi.model.Film;
 

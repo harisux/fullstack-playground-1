@@ -1,4 +1,4 @@
-package org.harisux.fullstackplay.pd1_backend_solution_bs4.entity;
+package org.harisux.fullstackplay.pd1backendsolutionbs4.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;

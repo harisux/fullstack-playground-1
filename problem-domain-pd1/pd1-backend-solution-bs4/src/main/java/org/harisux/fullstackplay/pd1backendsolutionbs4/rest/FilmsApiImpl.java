@@ -1,8 +1,8 @@
-package org.harisux.fullstackplay.pd1_backend_solution_bs4.rest;
+package org.harisux.fullstackplay.pd1backendsolutionbs4.rest;
 
 import org.harisux.fullstackplay.openapi.api.FilmsApi;
 import org.harisux.fullstackplay.openapi.model.Film;
-import org.harisux.fullstackplay.pd1_backend_solution_bs4.service.FilmsService;
+import org.harisux.fullstackplay.pd1backendsolutionbs4.service.FilmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

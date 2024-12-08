@@ -1,4 +1,4 @@
-package org.harisux.fullstackplay.pd1_backend_solution_bs4;
+package org.harisux.fullstackplay.pd1backendsolutionbs4;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -23,7 +23,6 @@
 
 		<!-- utilities -->
 		<lombok.version>1.18.26</lombok.version>
-		<mapstruct.version>1.5.3.Final</mapstruct.version>
 		<commons-text.version>1.9</commons-text.version>
 
 		<!-- openapi versions -->
@@ -79,11 +78,6 @@
 			<artifactId>lombok</artifactId>
 			<version>${lombok.version}</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct</artifactId>
-			<version>${mapstruct.version}</version> 
 		</dependency>
 		<dependency>
     		<groupId>org.apache.commons</groupId>
@@ -215,11 +209,6 @@
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 							<version>${lombok.version}</version>
-						</path>
-						<path>
-							<groupId>org.mapstruct</groupId>
-							<artifactId>mapstruct-processor</artifactId>
-							<version>${mapstruct.version}</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
