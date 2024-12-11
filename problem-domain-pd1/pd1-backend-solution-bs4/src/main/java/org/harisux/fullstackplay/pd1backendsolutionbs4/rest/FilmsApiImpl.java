@@ -42,12 +42,18 @@ public class FilmsApiImpl implements FilmsApi {
     public Mono<ResponseEntity<Film>> createFilm(@Valid Mono<Film> film, ServerWebExchange exchange) {
         // Generator creating input parameters wrapped in Mono?? 
         return film.flatMap(f1 -> 
-                filmsService.createFilm(f1).map(f -> ResponseEntity.ok(f)));
+                filmsService.createFilm(f1).map(f2 -> ResponseEntity.ok(f2)));
     }
 
     @Override
     public Mono<ResponseEntity<Void>> deleteFilm(Integer id, ServerWebExchange exchange) {
         return filmsService.deleteFilm(id).map(o -> new ResponseEntity<Void>(HttpStatus.NO_CONTENT));
+    }
+
+    @Override
+    public Mono<ResponseEntity<Film>> updateFilm(@Valid Mono<Film> film, ServerWebExchange exchange) {
+        return film.flatMap(f1 -> 
+                filmsService.updateFilm(f1).map(f2 -> ResponseEntity.ok(f2)));
     }
     
 }

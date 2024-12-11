@@ -142,6 +142,39 @@ public class FilmsServiceImpl implements FilmsService {
         ;
     }
     
+    @Override
+    public Mono<Film> updateFilm(Film film) {
+        String query = """
+            update film set
+                title = :title, description = :description, release_year = :release_year, 
+                language_id = :language_id, original_language_id = :original_language_id, 
+                rental_duration = :rental_duration, rental_rate = :rental_rate, length = :length, 
+                replacement_cost = :replacement_cost, rating = :rating, special_features = :special_features, 
+                last_update = :last_update
+            where film_id = :film_id
+        """;
+        return 
+            this.getFilm(film.getFilmId())
+                .flatMap(existingFilm -> 
+                    databaseClient.sql(query)
+                        .bind("title", film.getTitle())
+                        .bind("description", film.getDescription())
+                        .bind("release_year", film.getReleaseYear())
+                        .bind("language_id", film.getLanguage().getLanguageId())
+                        .bindNull("original_language_id", Integer.class)
+                        .bind("rental_duration", film.getRentalDuration())
+                        .bind("rental_rate", film.getRentalRate())
+                        .bind("length", film.getLength())
+                        .bind("replacement_cost", film.getReplacementCost())
+                        .bind("rating", film.getRating())
+                        .bind("special_features", film.getSpecialFeatures())
+                        .bind("last_update", Instant.now())
+                        .bind("film_id", film.getFilmId())
+                        .fetch().rowsUpdated()
+                )
+                .flatMap(rowsCount -> Mono.just(film))
+        ;
+    }
 
     /*** Auxiliary methods ***/
 
