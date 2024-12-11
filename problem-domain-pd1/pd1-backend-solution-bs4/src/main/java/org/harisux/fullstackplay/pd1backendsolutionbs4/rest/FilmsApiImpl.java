@@ -10,6 +10,7 @@ import org.harisux.fullstackplay.openapi.model.Film;
 import org.harisux.fullstackplay.openapi.model.FilmList;
 import org.harisux.fullstackplay.pd1backendsolutionbs4.service.FilmsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,19 @@ public class FilmsApiImpl implements FilmsApi {
     @Override
     public Mono<ResponseEntity<Film>> getFilm(Integer id, ServerWebExchange exchange) {
         return filmsService.getFilm(id).map(film -> ResponseEntity.ok(film));
+    }
+
+
+    @Override
+    public Mono<ResponseEntity<Film>> createFilm(@Valid Mono<Film> film, ServerWebExchange exchange) {
+        // Generator creating input parameters wrapped in Mono?? 
+        return film.flatMap(f1 -> 
+                filmsService.createFilm(f1).map(f -> ResponseEntity.ok(f)));
+    }
+
+    @Override
+    public Mono<ResponseEntity<Void>> deleteFilm(Integer id, ServerWebExchange exchange) {
+        return filmsService.deleteFilm(id).map(o -> new ResponseEntity<Void>(HttpStatus.NO_CONTENT));
     }
     
 }

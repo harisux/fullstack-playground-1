@@ -12,4 +12,8 @@ public interface FilmsService {
 
     public Mono<Film> getFilm(Integer id);
 
+    public Mono<Film> createFilm(Film film);
+
+    public Mono<Void> deleteFilm(Integer id);
+
 }

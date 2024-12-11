@@ -1,6 +1,7 @@
 package org.harisux.fullstackplay.pd1backendsolutionbs4.service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +93,58 @@ public class FilmsServiceImpl implements FilmsService {
         ;
     }
 
+    @Override
+    public Mono<Film> createFilm(Film film) {
+        String query = """
+            insert into film ( 
+                title, description, release_year, language_id,
+                original_language_id, rental_duration, rental_rate, length, 
+                replacement_cost, rating, special_features, last_update
+            ) values (
+                :title, :description, :release_year, :language_id,
+                :original_language_id, :rental_duration, :rental_rate, :length, 
+                :replacement_cost, :rating, :special_features, :last_update
+            )
+        """;
+
+        return databaseClient.sql(query)
+                .bind("title", film.getTitle())
+                .bind("description", film.getDescription())
+                .bind("release_year", film.getReleaseYear())
+                .bind("language_id", film.getLanguage().getLanguageId())
+                .bindNull("original_language_id", Integer.class)
+                .bind("rental_duration", film.getRentalDuration())
+                .bind("rental_rate", film.getRentalRate())
+                .bind("length", film.getLength())
+                .bind("replacement_cost", film.getReplacementCost())
+                .bind("rating", film.getRating())
+                .bind("special_features", film.getSpecialFeatures())
+                .bind("last_update", Instant.now())
+                .filter(stmt -> stmt.returnGeneratedValues("id"))
+                .map(row -> row.get("id", Integer.class))
+                .first()
+                .map(createdId -> {
+                    film.setFilmId(createdId);
+                    return film;
+                })
+        ;
+    }
+
+    @Override
+    public Mono<Void> deleteFilm(Integer id) {
+        return 
+            this.getFilm(id)
+                .flatMap(filmFound ->
+                    databaseClient.sql("delete from film where film_id = :film_id")
+                        .bind("film_id", id).fetch().rowsUpdated()
+                )
+                .flatMap(rowsUpdated -> Mono.empty())
+        ;
+    }
+    
+
+    /*** Auxiliary methods ***/
+
     private Mono<FilmList> setFilmsTotalCount(FilmList filmList) {
         return databaseClient.sql("select count(*) as total_count from film")
             .fetch().first()
@@ -144,5 +197,5 @@ public class FilmsServiceImpl implements FilmsService {
         film.setSpecialFeatures(String.join(",", (String[]) row.get("special_features")));
         return film;
     }
-    
+
 }
