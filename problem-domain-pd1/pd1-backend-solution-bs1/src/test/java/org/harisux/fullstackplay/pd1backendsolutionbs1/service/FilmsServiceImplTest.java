@@ -57,7 +57,7 @@ public class FilmsServiceImplTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenFilmIdNotFound() {
+    public void shouldThrowExceptionWhenFilmIdNotFoundOnGet() {
         //Given
         Mockito.when(filmsRepositoryMock.findById(Mockito.anyInt()))
             .thenReturn(Optional.empty());
@@ -99,5 +99,33 @@ public class FilmsServiceImplTest {
             .hasFieldOrPropertyWithValue("description", filmDtoListSample.get(1).getDescription());
     }
 
-    
+    @Test
+    public void shouldDeleteFilm() {
+        //Given
+        Mockito.when(filmsRepositoryMock.findById(Mockito.anyInt()))
+            .thenReturn(Optional.of(new FilmDto()));
+
+        Mockito.doNothing().when(filmsRepositoryMock).delete(Mockito.any(FilmDto.class));
+        
+        //When + Then
+        assertThatNoException().isThrownBy(() -> filmsServiceImpl.deleteFilm(1));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenFilmIdNotFoundOnDelete() {
+        //Given
+        Mockito.when(filmsRepositoryMock.findById(Mockito.anyInt()))
+            .thenReturn(Optional.empty());
+
+        Mockito.doNothing().when(filmsRepositoryMock).delete(Mockito.any(FilmDto.class));
+        
+        //When + Then
+        assertThatExceptionOfType(FilmNotFoundException.class)
+            .isThrownBy(() -> {
+                filmsServiceImpl.deleteFilm(100);
+            })
+            .withMessageContaining("Film with id=100 not found!")
+        ;
+    }
+
 }
