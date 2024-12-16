@@ -1,10 +1,14 @@
 package org.harisux.fullstackplay.pd1backendsolutionbs1.service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import org.harisux.fullstackplay.openapi.model.Film;
+import org.harisux.fullstackplay.openapi.model.FilmList;
+import org.harisux.fullstackplay.pd1backendsolutionbs1.exception.FilmNotFoundException;
 import org.harisux.fullstackplay.pd1backendsolutionbs1.mapper.FilmsMapper;
 import org.harisux.fullstackplay.pd1backendsolutionbs1.mapper.FilmsMapperImpl;
 import org.harisux.fullstackplay.pd1backendsolutionbs1.persistence.dao.FilmsRepository;
@@ -15,6 +19,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 @SpringBootTest(classes = { FilmsServiceImpl.class, FilmsMapperImpl.class })
 public class FilmsServiceImplTest {
@@ -49,5 +55,49 @@ public class FilmsServiceImplTest {
             .hasFieldOrPropertyWithValue("releaseYear", filmDtoSample.getReleaseYear())
         ;
     }
+
+    @Test
+    public void shouldThrowExceptionWhenFilmIdNotFound() {
+        //Given
+        Mockito.when(filmsRepositoryMock.findById(Mockito.anyInt()))
+            .thenReturn(Optional.empty());
+        
+        //When + Then
+        assertThatExceptionOfType(FilmNotFoundException.class)
+            .isThrownBy(() -> {
+                filmsServiceImpl.getFilm(100);
+            })
+            .withMessageContaining("Film with id=100 not found!")
+        ;
+    }
+
+    @Test
+    public void shouldGetFilmList() {
+        //Given
+        List<FilmDto> filmDtoListSample = Arrays.asList(
+            TestUtils.getJsonSample("filmdto-list-sample-1.json", 
+            FilmDto[].class));
+
+        Mockito.when(filmsRepositoryMock.findAll(Mockito.any(Pageable.class)))
+            .thenReturn(new PageImpl<>(filmDtoListSample));
+        Mockito.when(filmsRepositoryMock.count()).thenReturn(Long.valueOf(100));
+        
+        //When
+        FilmList filmList 
+            = filmsServiceImpl.getFilmList(2, 5, "filmId", "asc");
+
+        //Then
+        assertThat(filmList).isNotNull();
+        assertThat(filmList.getTotalCount()).isEqualTo(new BigDecimal(100));
+        assertThat(filmList.getData()).isNotNull().hasSize(2);
+        
+        assertThat(filmList.getData().get(0))
+            .hasFieldOrPropertyWithValue("filmId", filmDtoListSample.get(0).getFilmId())
+            .hasFieldOrPropertyWithValue("title", filmDtoListSample.get(0).getTitle());
+        assertThat(filmList.getData().get(1))
+            .hasFieldOrPropertyWithValue("filmId", filmDtoListSample.get(1).getFilmId())
+            .hasFieldOrPropertyWithValue("description", filmDtoListSample.get(1).getDescription());
+    }
+
     
 }
