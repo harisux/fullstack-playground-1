@@ -1,6 +1,8 @@
 package org.harisux.fullstackplay.pd1backendsolutionbs1.service;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -148,6 +150,31 @@ public class FilmsServiceImplTest {
         assertThat(createdFilm)
             .isNotNull()
             .hasFieldOrPropertyWithValue("filmId", createdId)
+            .hasFieldOrPropertyWithValue("title", filmSample.getTitle())
+            .hasFieldOrPropertyWithValue("description", filmSample.getDescription())
+        ;
+    }
+
+    @Test
+    public void shouldUpdateFilm() {
+        //Given
+        Film filmSample = TestUtils.getJsonSample("film-sample-1.json", Film.class);
+
+        OffsetDateTime updatedTime = OffsetDateTime.now(ZoneOffset.UTC);
+        Mockito.when(filmsRepositoryMock.save(Mockito.any(FilmDto.class)))
+            .thenAnswer(i -> {
+                FilmDto filmDtoIn = (FilmDto) i.getArguments()[0];
+                filmDtoIn.setLastUpdate(updatedTime);
+                return filmDtoIn;
+            });
+
+        //When
+        Film updatedFilm = filmsServiceImpl.createFilm(filmSample);
+
+        //Then
+        assertThat(updatedFilm)
+            .isNotNull()
+            .hasFieldOrPropertyWithValue("lastUpdate", updatedTime)
             .hasFieldOrPropertyWithValue("title", filmSample.getTitle())
             .hasFieldOrPropertyWithValue("description", filmSample.getDescription())
         ;
