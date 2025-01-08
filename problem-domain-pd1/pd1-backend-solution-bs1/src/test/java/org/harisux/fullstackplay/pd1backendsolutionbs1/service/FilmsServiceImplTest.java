@@ -169,7 +169,7 @@ public class FilmsServiceImplTest {
             });
 
         //When
-        Film updatedFilm = filmsServiceImpl.createFilm(filmSample);
+        Film updatedFilm = filmsServiceImpl.updateFilm(filmSample);
 
         //Then
         assertThat(updatedFilm)
