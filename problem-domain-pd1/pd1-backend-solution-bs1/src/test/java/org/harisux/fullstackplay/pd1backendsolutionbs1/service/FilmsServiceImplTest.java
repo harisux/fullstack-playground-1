@@ -128,4 +128,29 @@ public class FilmsServiceImplTest {
         ;
     }
 
+    @Test
+    public void shouldCreateFilm() {
+        //Given
+        Film filmSample = TestUtils.getJsonSample("film-sample-1.json", Film.class);
+
+        Integer createdId = 1234;
+        Mockito.when(filmsRepositoryMock.save(Mockito.any(FilmDto.class)))
+            .thenAnswer(i -> {
+                FilmDto filmDtoIn = (FilmDto) i.getArguments()[0];
+                filmDtoIn.setFilmId(createdId);
+                return filmDtoIn;
+            });
+
+        //When
+        Film createdFilm = filmsServiceImpl.createFilm(filmSample);
+
+        //Then
+        assertThat(createdFilm)
+            .isNotNull()
+            .hasFieldOrPropertyWithValue("filmId", createdId)
+            .hasFieldOrPropertyWithValue("title", filmSample.getTitle())
+            .hasFieldOrPropertyWithValue("description", filmSample.getDescription())
+        ;
+    }
+
 }

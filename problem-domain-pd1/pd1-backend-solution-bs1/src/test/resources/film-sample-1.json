@@ -1,0 +1,17 @@
+{
+    "film_id": 5,
+    "title": "AFRICAN EGG",
+    "description": "A Fast-Paced Documentary of a Pastry Chef And a Dentist who must Pursue a Forensic Psychologist in The Gulf of Mexico",
+    "release_year": 2006,
+    "language": {
+        "language_id": 1,
+        "name": "English"
+    },
+    "original_language": null,
+    "rental_duration": 6,
+    "rental_rate": 2.99,
+    "length": 130,
+    "replacement_cost": 22.99,
+    "rating": "G",
+    "special_features": "Deleted Scenes"
+}
