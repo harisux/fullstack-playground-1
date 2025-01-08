@@ -21,7 +21,7 @@
 		<spring-cloud.version>2022.0.1</spring-cloud.version>
 		
 		<!-- utilities-->
-		<lombok.version>1.18.26</lombok.version>
+		<lombok.version>1.18.30</lombok.version>
 		<mapstruct.version>1.5.3.Final</mapstruct.version>
 		<commons-text.version>1.9</commons-text.version>
 
