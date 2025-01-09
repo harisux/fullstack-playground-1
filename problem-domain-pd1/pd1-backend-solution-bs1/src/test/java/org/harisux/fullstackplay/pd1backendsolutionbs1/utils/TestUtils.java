@@ -1,6 +1,8 @@
 package org.harisux.fullstackplay.pd1backendsolutionbs1.utils;
 
 import java.io.File;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.core.io.ClassPathResource;
 
@@ -26,6 +28,18 @@ public class TestUtils {
             log.error(errMsg, exp);
         }
         return deserializedObj;
+    }
+
+    public static String getJsonSampleAsText(String jsonFilePath) {
+        String jsonAsStr = null;
+        try {
+            InputStream jsonStream = new ClassPathResource(jsonFilePath).getInputStream();
+            jsonAsStr = new String(jsonStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch(Exception exp) {
+            String errMsg = String.format("Failed to read file %s!", jsonFilePath);
+            log.error(errMsg, exp);
+        }
+        return jsonAsStr;
     }
 
 }
