@@ -4,4 +4,4 @@
 `docker build -t mysql-sakila-img .`
 
 ### Run the image
-`docker run -d -p 3306:3306 --name mysql-sakila mysql-sakila-img`
+`docker run -d -p <host-port-here>:3306 --name mysql-sakila mysql-sakila-img`
